@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!preg_match('/^[a-z]{4,20}$/', $username)) {
         echo json_encode([
             "success" => false,
-            "message" => "El usuario debe contener solo letras minúsculas (4-20 caracteres)"
+            
             "message" => "El usuario debe contener solo letras minúsculas (sin caracteres especiales) y tener entre 4 y 20 caracteres"
 
         ]);
@@ -112,7 +112,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($success) {
             echo json_encode([
                 "success" => true,
-                "message" => "¡Registro exitoso! Bienvenido/a"
+                "message" => "¡Registro exitoso!"
             ]);
         } else {
             echo json_encode([
