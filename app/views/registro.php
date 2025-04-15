@@ -5,12 +5,23 @@
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
+<<<<<<< HEAD
                 <div class="card bg-dark text-light">
                     <div class="card-header text-center" style="font-size: 2rem;">Registrar Usuario</div>
                     <div class="card-body">
                         <form id="registroForm" method="POST" action="/mvc-php/app/controllers/registrar_usuario.php">
 
                            
+=======
+
+                <div id="registroCard" class="card bg-dark text-light">
+                    <div class="card-header text-center" style="font-size: 2rem;">Registrar Usuario</div>
+                    <div class="card-body">
+
+                        <form id="registroForm" method="POST" action="/mvc-php/app/controllers/registrar_usuario.php">
+
+                       
+>>>>>>> ff3078a (Primer commit: Inicialización del proyecto)
                             <div class="form-group">
                                 <label for="nombre">Nombre Completo:</label>
                                 <input type="text" id="nombre" class="form-control" name="nombre" required>
@@ -75,5 +86,9 @@
     
     <!-- Script de registro -->
     <script src="/mvc-php/public/js/registro.js"></script>
+<<<<<<< HEAD
+=======
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+>>>>>>> ff3078a (Primer commit: Inicialización del proyecto)
 </body>
 </html>

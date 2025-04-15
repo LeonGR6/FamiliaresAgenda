@@ -47,7 +47,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!preg_match('/^[a-z]{4,20}$/', $username)) {
         echo json_encode([
             "success" => false,
+<<<<<<< HEAD
             "message" => "El usuario debe contener solo letras minúsculas (4-20 caracteres)"
+=======
+            "message" => "El usuario debe contener solo letras minúsculas (sin caracteres especiales) y tener entre 4 y 20 caracteres"
+>>>>>>> ff3078a (Primer commit: Inicialización del proyecto)
         ]);
         exit;
     }
@@ -92,6 +96,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $db->prepare($query);
         
         $success = $stmt->execute([
+<<<<<<< HEAD
+=======
+
+>>>>>>> ff3078a (Primer commit: Inicialización del proyecto)
             ':nombre' => $nombre,
             ':username' => $username,
             ':password' => $hashed_password,
@@ -99,6 +107,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ':cargo' => $cargo
         ]);
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> ff3078a (Primer commit: Inicialización del proyecto)
         if ($success) {
             echo json_encode([
                 "success" => true,
