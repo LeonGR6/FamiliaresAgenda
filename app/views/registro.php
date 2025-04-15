@@ -86,9 +86,9 @@
     
     <!-- Script de registro -->
     <script src="/mvc-php/public/js/registro.js"></script>
-<<<<<<< HEAD
-=======
+
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
->>>>>>> ff3078a (Primer commit: Inicialización del proyecto)
+
 </body>
 </html>
