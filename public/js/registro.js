@@ -5,6 +5,19 @@ document.addEventListener('DOMContentLoaded', function() {
         this.value = this.value.toUpperCase();
     });
     const form = document.getElementById('registroForm');
+
+     // Validación básica del cliente
+     const formData = {
+        nombre: nombreInput.value.trim(),
+        username: document.getElementById('username').value.trim(),
+        password: document.getElementById('password').value,
+        email: document.getElementById('email').value.trim(),
+        cargo: document.getElementById('cargo').value
+    };
+    
+    const errors = [];
+
+    
     
     form.addEventListener('submit', function(e) {
         e.preventDefault();
@@ -34,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('mensajeExito').style.display = 'block';
                 
                 // Redirección automática
-                let seconds = 5;
+                let seconds = 10;
                 const countdownElement = document.getElementById('countdown');
                 const timer = setInterval(() => {
                     seconds--;

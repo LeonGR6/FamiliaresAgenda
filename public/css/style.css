@@ -299,20 +299,20 @@ form .contraseña {
 }
 
   
-input[type="submit"]{
-   
-    border: 1px solid;
-    background: #4d4d4d;
-   
-    color: rgb(177, 177, 177);
-    cursor: pointer;
-    outline: none;
-}
 
-input[type="submit"]:hover {
-    transform: translateY(-.5px);
-    box-shadow: 0 6px 12px rgba(253, 255, 224, 0.788);
-}
+    .btn.sanclear {
+        border: 1px solid;
+        background: #4d4d4d !important;
+        color: rgb(219, 211, 211) !important;
+        cursor: pointer;
+        outline: none;
+    }
+    
+    .btn.sanclear:hover {
+        transform: translateY(-0.5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.788);
+    }
+
 
 .logo {
     display: block;
