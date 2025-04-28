@@ -1,0 +1,17 @@
+/* Estilos específicos para el footer */
+
+  html, body {
+    height: 100%;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Alternativa más moderna */
+  }
+  main {
+    flex: 1 0 auto; /* Esto hace que el contenido principal ocupe el espacio disponible */
+  }
+  .footer {
+    flex-shrink: 0;
+    width: 100%;
+  }

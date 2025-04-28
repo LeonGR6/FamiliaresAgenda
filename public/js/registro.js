@@ -7,17 +7,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('registroForm');
 
      // Validación básica del cliente
-     const formData = {
-        nombre: nombreInput.value.trim(),
-        username: document.getElementById('username').value.trim(),
-        password: document.getElementById('password').value,
-        email: document.getElementById('email').value.trim(),
-        cargo: document.getElementById('cargo').value
-    };
-    
-    const errors = [];
-
-    
+         const formData = {
+             nombre: nombreInput.value.trim(),
+             username: document.getElementById('username').value.trim(),
+             password: document.getElementById('password').value,
+             email: document.getElementById('email').value.trim(),
+             cargo: document.getElementById('cargo').value
+         };
+         
+         const errors = [];
     
     form.addEventListener('submit', function(e) {
         e.preventDefault();
@@ -34,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
             body: new FormData(form)
         })
         .then(response => {
-            if (!response.ok) throw new Error("Error en la red");
+            if (!response.ok) throw new Error(" ❌ Error en la red");
             return response.json();
         })
         .then(data => {
@@ -60,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
         .catch(error => {
-            alert("Error al conectar con el servidor");
+            alert("❌ Error al conectar con el servidor");
             console.error("Error:", error);
         })
         .finally(() => {

@@ -4,7 +4,7 @@ require_once '../models/conexion.php';
 if (!isset($db)) {
     echo json_encode([
         "success" => false,
-        "message" => "Error de conexión a la base de datos"
+        "message" => " ❌ Error de conexión a la base de datos"
     ]);
     exit;
 }
@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!in_array($cargo, $rolesPermitidos)) {
         echo json_encode([
             "success" => false,
-            "message" => "El cargo seleccionado no es válido"
+            "message" => " ❌ El cargo seleccionado no es válido"
         ]);
         exit;
     }
@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo json_encode([
             "success" => false,
             
-            "message" => "El usuario debe contener solo letras minúsculas (sin caracteres especiales) y tener entre 4 y 20 caracteres"
+            "message" => " ⚠️ El usuario debe contener solo letras minúsculas (sin caracteres especiales) y tener entre 4 y 20 caracteres"
 
         ]);
         exit;
@@ -58,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         echo json_encode([
             "success" => false,
-            "message" => "El email no es válido"
+            "message" => " ❌ El email no es válido"
         ]);
         exit;
     }
@@ -67,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/', $password)) {
         echo json_encode([
             "success" => false,
-            "message" => "La contraseña debe tener 8+ caracteres, mayúsculas, minúsculas, números y símbolos"
+            "message" => " ❌ Error: La contraseña debe tener 8+ caracteres, mayúsculas, minúsculas, números y símbolos"
         ]);
         exit;
     }
@@ -80,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($checkUser->rowCount() > 0) {
             echo json_encode([
                 "success" => false,
-                "message" => "El usuario o email ya están registrados"
+                "message" => " ❌ Error: El usuario o email ya están registrados"
             ]);
             exit;
         }
@@ -112,25 +112,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($success) {
             echo json_encode([
                 "success" => true,
-                "message" => "¡Registro exitoso!"
+                "message" => " ✅ ¡Registro exitoso!"
             ]);
         } else {
             echo json_encode([
                 "success" => false,
-                "message" => "Error al guardar el usuario"
+                "message" => " ❌ Error al guardar el usuario"
             ]);
         }
     } catch (PDOException $e) {
         error_log("Error en registro: " . $e->getMessage() . " en " . $e->getFile() . " línea " . $e->getLine());
         echo json_encode([
             "success" => false,
-            "message" => "Error interno. Por favor, inténtalo más tarde."
+            "message" => " ❌ Error interno. Por favor, inténtalo más tarde."
         ]);
     }
 } else {
     echo json_encode([
         "success" => false,
-        "message" => "Método no permitido"
+        "message" => " ❌ Método no permitido"
     ]);
 }
 ?>

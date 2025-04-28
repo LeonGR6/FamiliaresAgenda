@@ -12,7 +12,7 @@ if (!isset($_SESSION['usuario_id'])) {
 
 <body>
 
-    <h1>Bienvenido, <?php echo htmlspecialchars($_SESSION['nombre']); ?></h1>
+    <h1>Reportes</h1>
     
 </body>
 
