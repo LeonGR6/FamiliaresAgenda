@@ -20,19 +20,24 @@ CREATE TABLE usuarios (
 
 
 
-CREATE TABLE Reservas (
-    ID INT AUTO_INCREMENT PRIMARY KEY,
-    Nombre VARCHAR(255) NOT NULL,
-    Apellidos VARCHAR(255) NOT NULL,
-    Correo VARCHAR(255) NOT NULL,
-    Servicio VARCHAR(255) NOT NULL,
-    Fecha DATE NOT NULL,
+CREATE TABLE reservas (
+    ID INT(11) NOT NULL AUTO_INCREMENT,
+    numeroCarpeta VARCHAR(50) NOT NULL,
+    TipoProcedimiento VARCHAR(50) NOT NULL,
+    Fecha  DATE NOT NULL,
     Hora TIME NOT NULL,
-    MensajeAdicional TEXT,
-    Estado VARCHAR(20) NOT NULL, -- Columna para el estado
-    FechaCreacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FechaModificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
+    Duracion INT(11),
+    Puesto VARCHAR(100),
+    Motivo VARCHAR(255),
+    Juzgado VARCHAR(20) NOT NULL,
+    Observaciones TEXT,
+    Estado VARCHAR(20) NOT NULL,
+    usuario_id INT(11) NOT NULL,
+    FechaCreacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FechaModificacion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (ID),
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE Contacto (
   Id INT AUTO_INCREMENT PRIMARY KEY,

@@ -30,9 +30,10 @@ document.addEventListener("DOMContentLoaded", function() {
             5: Viernes
             6: Sábado
         */
+       
 
         // Coloca únicamente los dias que deseas habilitar
-        if (diaSemana !== 1 && diaSemana !== 2 && diaSemana !== 3 && diaSemana !== 4 && diaSemana !== 5) {
+        if (diaSemana !== 1 && diaSemana !== 2 && diaSemana !== 3 && diaSemana !== 4 && diaSemana !== 5 && diaSemana !== 6) {
             fechaInput.value = ""; // Borrar la fecha seleccionada
             mensajeError.textContent = " ⚠️ Este día no se cuenta con servicio, selecciona uno distinto.";
         } else {
@@ -42,4 +43,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Agregar un evento onchange al campo de fecha
     document.getElementById("fecha").addEventListener("change", validarFecha);
+    
 });
+
+

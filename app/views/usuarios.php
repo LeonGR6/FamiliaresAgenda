@@ -23,6 +23,13 @@ include 'inc/navbar_app.php';
             <div class="table-responsive mx-auto">
                 <table class="table table-striped table-hover">
                     <thead class="thead-dark">
+
+                        <div class="d-flex justify-content-between mb-3">
+                                    <a href="modals/registrar_usuarios.php" class="btn btn-outline-success border btn-md">
+                                        <i class="fas fa-user"></i> Registrar Usuario
+                                    </a>
+                                </div>
+                        
                         <tr>
                             <th>ID</th>
                             <th>Nombre</th>

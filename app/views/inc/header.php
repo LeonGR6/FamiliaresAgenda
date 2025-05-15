@@ -20,6 +20,8 @@ if($current_page == 'index') {
     <link rel="icon" href="/mvc-php/favicon.ico" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/mvc-php/public/css/style.css">
+    <link rel="stylesheet" href="/mvc-php/public/css/calendar.css">
+
     <title><?php echo $page_title; ?></title>
     <!-- Incluye las bibliotecas de Bootstrap y Datepicker -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
@@ -28,9 +30,6 @@ if($current_page == 'index') {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <!-- Datatables -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+
    
-
-
-    
-    
 </head>
