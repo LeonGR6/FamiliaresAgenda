@@ -41,12 +41,13 @@ if (!isset($_SESSION['usuario_id'])) {
                         <th>JUZGADO</th>
                             <th>N° CARPETA</th>
                             <th>FECHA</th>
+                            <th>ESPACIO</th>
                             <th>HORA</th>
                             <th>DURACIÓN</th>
                             <th>TIPO</th>
-                            <th>PUESTO</th>
                             <th>OBSERVACIONES</th>
                             <th>MOTIVO</th>
+                            
                             <th>ESTADO</th>
                             <th>ACCIONES</th>
                         </tr>
@@ -57,12 +58,12 @@ if (!isset($_SESSION['usuario_id'])) {
                             <td><?php echo $registro->Juzgado; ?></td>
                                 <td><?php echo $registro->numeroCarpeta; ?></td>
                                 <td><?php echo $registro->Fecha; ?></td>
-                                
+                                <td><?php echo $registro->Sala; ?></td>
                                 <td><?php echo $registro->Hora; ?></td>
                                 <td><?php echo $registro->Duracion; ?></td>
                                 <td><?php echo $registro->TipoProcedimiento; ?></td>
 
-                                <td><?php echo $registro->Puesto; ?></td>
+                                
                                 <td><?php echo substr($registro->Observaciones, 0, 30) . (strlen($registro->Observaciones) > 30 ? '...' : ''); ?></td>
                                 <td><?php echo $registro->Motivo; ?></td>
                                 
@@ -180,7 +181,7 @@ $(document).ready(function() {
             if(response.success) {
                 // Mostrar alerta de éxito con detalles
                 alert('✅ RESERVA EXITOSA\n\n' +
-                     'Número: EXPEDIENTE-' + response.data.numero_carpeta + '\n' +
+                     'Número: EXP' + response.data.numero_carpeta + '\n' +
                      'Fecha: ' + formatDate(response.data.fecha_hora) + '\n' +
                      'Tipo: ' + response.data.tipo);
                 

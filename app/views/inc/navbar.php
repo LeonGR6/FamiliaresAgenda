@@ -12,7 +12,7 @@
       </button>
       <div>
             <a >
-                <img src="/mvc-php/public/images/familiares.png"
+                <img src="/mvc-php/public/images/loginlog.png"
                  alt="Logo" 
                  style="max-height: 30px;">
             </a>

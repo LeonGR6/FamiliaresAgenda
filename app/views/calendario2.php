@@ -1,4 +1,5 @@
 <?php
+
 // Incluir archivo de configuración de la base de datos
 include("../models/conexion.php");
 
@@ -13,8 +14,8 @@ try {
                 Hora, 
                 Duracion,
                 Puesto,
-                Sala,
-                Juzgado
+                Juzgado,
+                Sala
             FROM Reservas
             "; // Filtro opcional
     
@@ -37,10 +38,11 @@ try {
             'extendedProps' => [
                 'puesto' => $row['Puesto'],
                 'duracion' => $duracion,
-                'sala' => $row['sala'],
-                'tipoProcedimiento' => $row['TipoProcedimiento']
+                'tipoProcedimiento' => $row['TipoProcedimiento'],
+                'sala' => $row['Sala']
             ],
-            'className' => 'duracion-' . $duracion // Clase CSS para la duración
+            'className' => 'duracion-' . $duracion, // Clase CSS para la duración
+            'className' => 'juzgado-' . preg_replace('/\D/', '', $row['Juzgado']) // Clase CSS para el juzgado
         ];
     }
     
@@ -48,6 +50,8 @@ try {
 } catch (PDOException $e) {
     error_log("Error en la base de datos: " . $e->getMessage());
     $citas_json = '[]';
+    
+    
 }
 
 $db = null;
@@ -56,11 +60,13 @@ $db = null;
 
 
 <div id='calendar' class='text-dark '></div>
-
+<script>
+    window.allEvents = <?php echo $citas_json; ?>;
+</script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     
-    
+   
 document.addEventListener('DOMContentLoaded', function() {
     const tooltip = document.createElement('div');
     tooltip.id = 'event-tooltip';
@@ -69,11 +75,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
 
     var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
-        initialView: 'timeGridWeek',
+        initialView: 'dayGridMonth',
         locale: 'es',
         slotMinTime: '08:00:00',
         slotMaxTime: '18:00:00',
-        
         headerToolbar: {
             left: 'prev,next today',
             center: 'title',
@@ -108,10 +113,15 @@ document.addEventListener('DOMContentLoaded', function() {
         slotLabelInterval: '00:30:00',
         dayMaxEvents: true,
         noEventsContent: 'No hay eventos programados',
-        events: <?php echo $citas_json; ?>,
-        eventDisplay: 'block',
+        events: function(info, successCallback, failureCallback) {
+        const salaSeleccionada = document.getElementById('salaFilter').value;
+        const eventosFiltrados = window.allEvents.filter(evento => {
+            return salaSeleccionada === 'todas' || evento.extendedProps.sala === salaSeleccionada;
+        });
+        successCallback(eventosFiltrados);
+    },
         
-
+        eventDisplay: 'block',
         
         // Solo activar tooltip para vistas que no sean listDay
         eventDidMount: function(arg) {
@@ -125,6 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <strong>Carpeta:</strong> ${arg.event.extendedProps.numeroCarpeta}<br>
                             <strong>Tipo:</strong> ${arg.event.extendedProps.tipoProcedimiento}<br>
                             <strong>Duración:</strong> ${arg.event.extendedProps.duracion} min<br>
+                            <strong>Juzgado:</strong> ${arg.event.extendedProps.juzgado}<br>
                             <em>Click para ver más detalles</em>
                         </div>
                     `;
@@ -162,13 +173,8 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (arg.view.type === 'dayGridMonth') {
                 content.innerHTML = `
-                    <div style="
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        font-size: 0.9em;
-                    ">
-                        ${arg.timeText} ${arg.event.title}
+                    <div style="display: flex; justify-content: space-between;">
+                        ${arg.timeText} ${arg.event.extendedProps.numeroCarpeta}
                     </div>
                 `;
             } else if (arg.view.type === 'listDay') {
@@ -190,7 +196,6 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         
         eventClick: function(info) {
-            
             Swal.fire({
                 title: info.event.extendedProps.numeroCarpeta,
                 html: `
@@ -212,7 +217,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     calendar.render();
+      document.getElementById('salaFilter').addEventListener('change', function() {
+        calendar.refetchEvents();
+    });
 });
+  
 
 const style = document.createElement('style');
 style.textContent = `
@@ -249,7 +258,7 @@ style.textContent = `
     }
     
     #event-tooltip strong {
-        color: #f8f9fa;
+        color:rgb(250, 248, 248);
         font-weight: 600;
     }
     
@@ -276,7 +285,45 @@ style.textContent = `
     .fc-listDay-view .fc-event:hover {
         background-color: rgba(0, 0, 0, 0.05);
     }
-`;
+    
+    /* Colores para juzgados */
+    .juzgado-1 {
+        background-color: #afda8c !important;
+        border-color: #afda8c !important;
+    }
+
+    .juzgado-2 {
+        background-color: #8cd6da !important;
+        border-color: #8cd6da !important;
+    }
+
+    .juzgado-3 {
+        background-color: #b78cda !important;
+        border-color: #b78cda !important;
+    }
+
+    .juzgado-4 {
+        background-color: #da908c !important;
+        border-color: #da908c !important;
+    }
+
+   
+    .juzgado-6 {
+        background-color: #FFEEAD !important;
+        border-color: #FFEEAD !important;
+    }
+
+    /* Agrega esto al final de tu estilo */
+    .form-select {
+        transition: all 0.3s ease;
+        border: 2px solid #dee2e6;
+    }
+
+    .form-select:focus {
+        border-color: #86b7fe;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+    `;
 document.head.appendChild(style);
 
 </script>

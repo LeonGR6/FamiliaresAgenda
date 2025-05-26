@@ -44,6 +44,7 @@ try {
     // Hash de la contraseña
     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
     
+    
     // Insertar en la base de datos (ejemplo con PDO)
     $stmt = $pdo->prepare("INSERT INTO usuarios (nombre, username, email, password, cargo) 
                           VALUES (?, ?, ?, ?, ?)");

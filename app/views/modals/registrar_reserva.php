@@ -16,10 +16,10 @@ require_once '../inc/navbar_default.php';
         
             <div class="container-fluid col-md-12 col-lg-10 mx-auto mt-4 mb-5">
                 <div class="card-header text-center text-dark">
-                    <h1 class="h3 mb-0" style="font-size: calc(1.2rem + 0.6vw)">Registro de Reservaciones</h1>
+                    <h1 class="h3 mb-0" style="font-size: calc(1.2rem + 0.6vw)">Registro de Audiencias</h1>
+                    <p class="text-muted" style="font-size: 0.9rem;">Realiza el registro de audiencias presenciales</p>
                 </div>
                 <br>
-                
                 
                     
                 <form id="formReserva" method="post" class="card shadow mx-auto p-4 text-dark"  style="max-width: 700px; margin: 0 auto;">
@@ -27,17 +27,42 @@ require_once '../inc/navbar_default.php';
                     <!-- Mensaje de respuesta -->
                     <div id="responseMessage" class="alert d-none"></div>
 
-                    <div class="form-group mb-3">
-                        <label for="numero_carpeta">Número y Año de Carpeta</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">EXPEDIENTE-</span>
+                    <div class="row mb-3">
+                        <!-- Campo de número de carpeta -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="numero_carpeta"></label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">EXPEDIENTE </span>
+                                    </div>
+                                    <input type="text" class="form-control" id="numero_carpeta" name="numero_carpeta" 
+                                        placeholder="NNNN-AAAA"
+                                        pattern="\d{4}-\d{4}"
+                                        oninput="this.value = this.value.replace(/[^0-9-]/g, '');"
+                                        onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode === 45"
+                                        maxlength="9"
+                                        required>
+                                    <div class="invalid-feedback">Formato incorrecto</div>
+                                </div>
+                                <small class="form-text text-muted">Formato correcto: NNNN-AAAA</small>
                             </div>
-                            <input type="text" class="form-control" id="numero_carpeta" name="numero_carpeta" 
-                                placeholder="1245-2024" pattern="\d+-\d{4}" required>
-                            <div class="invalid-feedback"></div>
                         </div>
-                        <small class="form-text text-muted">Formato correcto: 1245-2024</small>
+
+                        <!-- Campo de juzgado -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="juzgado"></label>
+                                <select class="form-control" id="juzgado" name="juzgado" required>
+                                    <option value="">Seleccione un juzgado</option>
+                                    <option value="1° F">1° FAMILIAR</option>
+                                    <option value="2° F">2° FAMILIAR</option>
+                                    <option value="3° F">3° FAMILIAR</option>
+                                    <option value="4° F">4° FAMILIAR</option>
+                                    <option value="6° F">6° FAMILIAR</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="row mb-3">
@@ -70,25 +95,32 @@ require_once '../inc/navbar_default.php';
                     </div>
                 </div>
 
-                    <div class="form-group mb-3">
-                        <label for="tipo">Tipo</label>
-                        <select class="form-control" id="tipo" name="tipo" required>
-                        <option value="" >Seleccione Tipo Audiencia</option>
-                            <option value="AUDIENCIAS CONCILIACIÓN">CONCILIACIÓN</option>
-                            <option value="AUDIENCIAS DESAHOGO DE PRUEBAS">DESAHOGO DE PRUEBAS</option>
-                            <option value="AUDIENCIAS ESCUCHA DE MENORES">ESCUCHA DE MENORES</option>
-                            <option value="AUDIENCIAS ALEGATOS">ALEGATOS</option>
-                            </select>
-                    </div>
+                    <div class="row mb-3">
+                        <!-- Campo de tipo -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="tipo">Tipo</label>
+                                <select class="form-control" id="tipo" name="tipo" required>
+                                    <option value="">Seleccione Tipo Audiencia</option>
+                                    <option value="AUDIENCIA DE CONCILIACIÓN">CONCILIACIÓN</option>
+                                    <option value="AUDIENCIA DE DESAHOGO DE PRUEBAS">DESAHOGO DE PRUEBAS</option>
+                                    <option value="AUDIENCIA DE ESCUCHA DE MENORES">ESCUCHA DE MENORES</option>
+                                    <option value="AUDIENCIA DE ALEGATOS">ALEGATOS</option>
+                                </select>
+                            </div>
+                        </div>
 
-                    <div class="form-group mb-3">
-                        <label for="puesto">Puesto</label>
-                        <input type="text" class="form-control text-uppercase" id="puesto" name="puesto" 
-                            placeholder="ANALISTA JR 1" 
-                            pattern="[A-Z0-9 ]+" 
-                            oninput="this.value = this.value.toUpperCase(); this.value = this.value.replace(/[^A-Z0-9 ]/g, '');"
-                            required>
-                        <div class="invalid-feedback"></div>
+                        <!-- Campo de sala -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="sala">Sala</label>
+                                <select class="form-control" id="sala" name="sala" required>
+                                    <option value="">Seleccione el espacio deseado</option>
+                                    <option value="SALA">SALA</option>
+                                    <option value="CAMARA">CAMARA GESEL</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-group mb-3">
@@ -100,23 +132,6 @@ require_once '../inc/navbar_default.php';
                         <small class="form-text text-muted">Máximo 500 caracteres</small>
                     </div>
 
-                    <div class="form-group mb-4">
-                        <label for="motivo">Motivo</label>
-                        <input type="text" class="form-control text-uppercase" id="motivo" name="motivo"
-                                placeholder="SOLICITUD DE REVISIÓN"
-                                oninput="this.value = this.value.toUpperCase()">
-                    </div>
-
-                    <div class="form-group mb-3">
-                        <label for="juzgado">Juzgado</label>
-                        <select class="form-control" id="juzgado" name="juzgado" required>
-                        <option value="">Seleccione un juzgado</option>
-                            <option value="1 F">1 FAMILIARES</option>
-                            <option value="2 F">2 FAMILIARES</option>
-                            <option value="3 F">3 FAMILIARES</option>
-                            </select>
-                    </div>
-
                     <input type="hidden" name="estado" value="Pendiente">
                     <input type="hidden" name="oculto" value="1">
                     
@@ -126,7 +141,7 @@ require_once '../inc/navbar_default.php';
                             <button type="reset" class="btn btn-warning px-4 me-2">Limpiar</button>
                         </div>
                         <button type="submit" id="btnSubmit" class="btn btn-primary px-4">
-                            <span id="submitText">Enviar</span>
+                            <span id="submitText">Guardar</span>
                             <span id="submitSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                         </button>
                     </div>
@@ -134,6 +149,17 @@ require_once '../inc/navbar_default.php';
             </div>
         </div>
     </div>
+    <style>
+    #infooral-img {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 9999;
+        width: 190px; /* Tamaño grande */
+        height: auto;
+    }
+</style>
+<img id="infooral-img" src="/mvc-php/public/images/infooral.png" alt="Info Oral">
 
     <script>
     

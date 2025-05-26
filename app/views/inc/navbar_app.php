@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <!-- Logo -->
         <a class="navbar-brand" href="./">
-            <img src="/mvc-php/public/images/familiares.png" 
+            <img src="/mvc-php/public/images/loginlog.png" 
                  alt="Logo" 
                  style="max-height: 30px;">
         </a>
@@ -37,12 +37,12 @@
                     </a>
                 </li>
                 
-                <!-- Lista de Contactos -->
+                <!-- Lista de Contactos 
                  <li class="nav-item">
                     <a class="nav-link mx-2" href="contactos-app.php" id="nav-contactos-lista">
                         <i class="fas fa-address-book me-1"></i> Contactos
                     </a>
-                </li>
+                </li> -->       
 
                 <li class="nav-item">
                     <a class="nav-link mx-2" href="usuarios.php" id="nav-usuarios">
@@ -52,14 +52,14 @@
 
                 
                 
-                <!-- Reportes -->
+                <!-- Reportes 
                  <li class="nav-item">
                     <a class="nav-link mx-2" href="reportes.php" id="nav-reportes">
                         <i class="fas fa-chart-bar me-1"></i> Reportes
                     </a>
-                </li>
+                </li>             -->
 
-                <!-- Notificaciones -->
+                <!-- Notificaciones 
                 <li class="nav-item">
                     <a class="nav-link mx-2 position-relative" href="notificar.php" id="nav-notificaciones">
                         <i class="fas fa-bell me-1"></i> Notificaciones
@@ -67,7 +67,9 @@
                             0
                         </span>
                     </a>
-                </li>
+                </li>             -->
+
+
             </ul>
             
             <!-- Botón de logout -->

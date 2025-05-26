@@ -60,11 +60,6 @@
             </div>
         </div>
     </div>
-</body>                             
-
-
-
-    
 
     <!-- Mensaje de éxito (oculto inicialmente) -->
     <div id="mensajeExito" class="container mt-5" style="display: none;">
@@ -87,15 +82,34 @@
         </div>
     </div>
 
- <!-- 1. jQuery (siempre primero) -->
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<!-- 2. Popper.js -->
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-<!-- 3. Bootstrap JS -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<!-- 4. Tus scripts (registro.js, SweetAlert, etc.) -->
-<script src="/mvc-php/public/js/registro.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- 1. jQuery (siempre primero) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!-- 2. Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <!-- 3. Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <!-- 4. Tus scripts (registro.js, SweetAlert, etc.) -->
+    <script src="/mvc-php/public/js/registro.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <!-- Script para autocompletar el campo de usuario -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const nombreInput = document.getElementById('nombre');
+            const usernameInput = document.getElementById('username');
+
+            nombreInput.addEventListener('input', function () {
+                const nombreCompleto = nombreInput.value.trim().split(' ');
+                if (nombreCompleto.length >= 2) {
+                    const primerNombre = nombreCompleto[0];
+                    const primerApellido = nombreCompleto[1];
+                    const username = primerNombre.substring(0, 2).toLowerCase() + primerApellido.substring(0, 4).toLowerCase();
+                    usernameInput.value = username;
+                } else {
+                    usernameInput.value = '';
+                }
+            });
+        });
+    </script>
 </body>
 </html>

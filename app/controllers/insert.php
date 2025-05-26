@@ -23,8 +23,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['oculto'])) {
             'fecha' => 'Fecha',
             'hora' => 'Hora',
             'juzgado' => 'Juzgado',
-            
+            'sala' => 'Sala',
             'duracion' => 'Duración',
+            'sala' => 'Tipo de espacio (Sala/Cámara)',
         ];
         
         foreach ($requiredFields as $field => $name) {
@@ -34,15 +35,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['oculto'])) {
         }
 
         // Procesar datos
-        $numeroCarpeta = 'EXPEDIENTE-' . htmlspecialchars($_POST['numero_carpeta']);
+        $numeroCarpeta = 'EXP' . htmlspecialchars($_POST['numero_carpeta']);
         $tipoProcedimiento = strtoupper(htmlspecialchars($_POST['tipo']));
         $fecha = htmlspecialchars($_POST['fecha']);
         $hora = htmlspecialchars($_POST['hora']);
         $juzgado = strtoupper(htmlspecialchars($_POST['juzgado']));
+        $sala = strtoupper(htmlspecialchars($_POST['sala']));
         $duracion = !empty($_POST['duracion']) ? (int)$_POST['duracion'] : null;
         $puesto = !empty($_POST['puesto']) ? strtoupper(htmlspecialchars($_POST['puesto'])) : null;
         $motivo = !empty($_POST['motivo']) ? strtoupper(htmlspecialchars($_POST['motivo'])) : null;
         $observaciones = !empty($_POST['observaciones']) ? strtoupper(htmlspecialchars($_POST['observaciones'])) : null;
+
+        // Validar tipo de espacio
+        if ($sala !== 'SALA' && $sala !== 'CAMARA') {
+            throw new Exception("❌ Tipo de espacio inválido. Elige 'Sala' o 'Camara'.");
+        }
+
+        // Asignar SALA o CÁMARA aleatoriamente (se guardará en el campo `sala` de la BD)
+        if ($sala === 'SALA') {
+            $sala = 'SALA ' . rand(1, 3); // Sala 1, 2 o 3 (random)
+        } else {
+            $sala = 'CAMARA ' . rand(1, 2); // Cámara 1 o 2 (random)
+        }
 
         if (!DateTime::createFromFormat('Y-m-d', $fecha)) {
             throw new Exception("Formato de fecha inválido");
@@ -60,7 +74,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['oculto'])) {
 
         // Verificar solapamiento con otras reservas en el mismo juzgado y fecha
         $sqlSolapamiento = "SELECT Hora, Duracion FROM reservas 
-                          WHERE Fecha = ? 
+                          WHERE Fecha = ?
+                          
                           AND Juzgado = ?";
         $stmtSolapamiento = $db->prepare($sqlSolapamiento);
         $stmtSolapamiento->execute([$fecha, $juzgado]);
@@ -70,21 +85,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['oculto'])) {
             $otraMinutosInicio = $otraHora[0] * 60 + $otraHora[1];
             $otraMinutosFin = $otraMinutosInicio + $otraReserva->Duracion;
             
-            // Verificar si los intervalos se solapan
-            if (($minutosInicio >= $otraMinutosInicio && $minutosInicio < $otraMinutosFin) ||
-                ($minutosFin > $otraMinutosInicio && $minutosFin <= $otraMinutosFin) ||
-                ($minutosInicio <= $otraMinutosInicio && $minutosFin >= $otraMinutosFin)) {
+            $otraMinutosFinConMargen = $otraMinutosFin + 30;
+            
+            // Verificar si los intervalos se solapan (incluyendo el margen de 30 minutos)
+            if (($minutosInicio >= $otraMinutosInicio && $minutosInicio < $otraMinutosFinConMargen) ||
+                ($minutosFin > $otraMinutosInicio && $minutosFin <= $otraMinutosFinConMargen) ||
+                ($minutosInicio <= $otraMinutosInicio && $minutosFin >= $otraMinutosFinConMargen)) {
                 
                 $horaFormateada = date("g:i a", strtotime($otraReserva->Hora));
-                throw new Exception("❌ La reserva se solapa con otra existente a las $horaFormateada (dura $otraReserva->Duracion minutos)");
+                $duracionConMargen = $otraReserva->Duracion + 30;
+                throw new Exception("❌ La reserva se solapa con otra existente a las $horaFormateada (dura $otraReserva->Duracion minutos + 30 min de margen)");
             }
         }
 
         // Insertar en DB
         $sql = "INSERT INTO reservas (
                     numeroCarpeta, TipoProcedimiento, Fecha, Hora, Juzgado, Duracion, 
-                    Puesto, Motivo, Observaciones, Estado, usuario_id
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    Puesto, Motivo, Observaciones, Estado, usuario_id, sala
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $db->prepare($sql);
         $result = $stmt->execute([
@@ -98,7 +116,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['oculto'])) {
             $motivo,
             $observaciones,
             'Pendiente',
-            $_SESSION['usuario_id']
+            $_SESSION['usuario_id'],
+            $sala
         ]);
 
         if ($result) {

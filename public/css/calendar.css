@@ -25,6 +25,7 @@
 .fc-event:hover {
     box-shadow: 0 4px 8px rgba(0,0,0,0.15);
     transform: translateY(-2px);
+    ;
 }
 
 /* Contenido del evento */
@@ -32,11 +33,12 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    color: black;
 }
 
 .fc-event-time {
     font-size: 0.8em;
-    color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
     margin-bottom: 1px;
 }
 
@@ -48,20 +50,32 @@
 }
 
 .fc-event-carpeta {
-    background-color: rgba(72, 166, 254, 0.62);
-    color: white;
+    background-color: rgba(231, 243, 255, 0.3);
+    color: rgb(0, 0, 0);
     padding: 2px 4px;
     border-radius: 3px;
     font-size: 0.75em;
     margin-top: 3px;
     display: inline-block;
-}
+}*/
 
 /* Alturas según duración */
 .evento-duracion-30 { height: 30px !important; }
 .evento-duracion-60 { height: 60px !important; }
 .evento-duracion-90 { height: 90px !important; }
 .evento-duracion-120 { height: 120px !important; }
+.evento-duracion-150 { height: 150px !important; }
+.evento-duracion-180 { height: 180px !important; }
+.evento-duracion-210 { height: 210px !important; }
+.evento-duracion-240 { height: 240px !important; }
+.evento-duracion-270 { height: 270px !important; }
+.evento-duracion-300 { height: 300px !important; }
+.evento-duracion-330 { height: 330px !important; }
+.evento-duracion-360 { height: 360px !important; }
+.evento-duracion-390 { height: 390px !important; }
+.evento-duracion-420 { height: 420px !important; }
+.evento-duracion-450 { height: 450px !important; }
+.evento-duracion-480 { height: 480px !important; }
 
 /* Estilos para la cabecera y botones */
 .fc-button {
@@ -99,7 +113,7 @@
 }
 
 .fc-list-event:hover {
-    background-color: #f8f9fa !important;
+    background-color: #ffffff !important;
 }
 
 /* Textos legibles */
@@ -129,6 +143,7 @@
 .fc-daygrid-day-events {
     min-height: 15px;
 }
+
 
 
 /* Responsive */

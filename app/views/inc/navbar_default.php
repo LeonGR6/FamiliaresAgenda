@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <!-- Logo -->
         <a class="navbar-brand" href="./">
-            <img src="/mvc-php/public/images/familiares.png" 
+            <img src="/mvc-php/public/images/loginlog.png" 
                  alt="Logo" 
                  style="max-height: 30px;">
         </a>
@@ -17,7 +17,15 @@
         <!-- Contenido colapsable -->
         <div class="collapse navbar-collapse" id="navbarCollapse">
            
-            
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                <li class="nav-item">
+                    <a class="nav-link mx-2" href="../registro-app.php" id="nav-inicio">
+                        <i class="fas fa-home me-1"></i> Registro
+                    </a>
+                </li>
+            </ul>
+                </div>
             <!-- Botón de logout -->
            
                 </form>
