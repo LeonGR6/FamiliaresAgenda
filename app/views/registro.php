@@ -93,23 +93,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Script para autocompletar el campo de usuario -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const nombreInput = document.getElementById('nombre');
-            const usernameInput = document.getElementById('username');
-
-            nombreInput.addEventListener('input', function () {
-                const nombreCompleto = nombreInput.value.trim().split(' ');
-                if (nombreCompleto.length >= 2) {
-                    const primerNombre = nombreCompleto[0];
-                    const primerApellido = nombreCompleto[1];
-                    const username = primerNombre.substring(0, 2).toLowerCase() + primerApellido.substring(0, 4).toLowerCase();
-                    usernameInput.value = username;
-                } else {
-                    usernameInput.value = '';
-                }
-            });
-        });
-    </script>
+    
 </body>
 </html>

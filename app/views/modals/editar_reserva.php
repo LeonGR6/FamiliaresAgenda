@@ -42,7 +42,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'fecha' => "Fecha",
             'hora' => "Hora",
             'tipo' => "Tipo de procedimiento",
-            'puesto' => "Puesto",
             'juzgado' => 'Juzgado',
             'sala' => 'Sala',
             'duracion' => 'Duración'
@@ -78,15 +77,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
         $datos = [
-            'numeroCarpeta' => 'EXPEDIENTE-' . preg_replace('/[^0-9-]/', '', $_POST['numero_carpeta']),
+            'numeroCarpeta' => '' . preg_replace('/[^0-9-]/', '', $_POST['numero_carpeta']),
             'TipoProcedimiento' => mb_strtoupper(trim($_POST['tipo'])),
             'Fecha' => $_POST['fecha'],
             'Hora' => $_POST['hora'],
             'Juzgado' => mb_strtoupper(trim($_POST['juzgado'])),
             'Sala' => $sala,
+            'Cargo' => $reserva->Cargo ?? null,
             'Duracion' => filter_var($_POST['duracion'], FILTER_VALIDATE_INT, ['options' => ['min_range' => 30, 'max_range' => 480]]),
-            'Puesto' => mb_strtoupper(trim($_POST['puesto'])),
-            'Motivo' => isset($_POST['motivo']) ? mb_strtoupper(trim($_POST['motivo'])) : null,
             'Observaciones' => isset($_POST['observaciones']) ? mb_strtoupper(trim($_POST['observaciones'])) : null,
             'Estado' => $_POST['estado'] ?? 'Pendiente',
             'id' => $id_reserva
@@ -97,21 +95,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // Validar fecha no pasada
-        if (new DateTime($datos['Fecha']) < new DateTime('today')) {
-            throw new Exception("No se pueden crear reservas en fechas pasadas");
-        }
+        
 
         // Verificar disponibilidad (excluyendo esta reserva)
         $sqlCheck = "SELECT ID FROM reservas 
-                    WHERE Fecha = :Fecha 
+                    WHERE Fecha = :Fecha
+                    AND Sala = :Sala 
                     AND Hora = :Hora 
-                    AND Juzgado = :Juzgado 
                     AND ID != :id";
         $stmtCheck = $db->prepare($sqlCheck);
         $stmtCheck->execute([
             'Fecha' => $datos['Fecha'],
+            'Sala' => $datos['Sala'],
             'Hora' => $datos['Hora'],
-            'Juzgado' => $datos['Juzgado'],
             'id' => $id_reserva
         ]);
 
@@ -125,13 +121,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $minutosFin = $minutosInicio + $datos['Duracion'];
 
         $sqlSolapamiento = "SELECT ID, Hora, Duracion FROM reservas 
-                           WHERE Fecha = :Fecha 
-                           AND Juzgado = :Juzgado 
+                           WHERE Fecha = :Fecha
+                            AND Sala = :Sala 
                            AND ID != :id";
         $stmtSolapamiento = $db->prepare($sqlSolapamiento);
         $stmtSolapamiento->execute([
             'Fecha' => $datos['Fecha'],
-            'Juzgado' => $datos['Juzgado'],
+            'Sala' => $datos['Sala'],
             'id' => $id_reserva
         ]);
 
@@ -158,8 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 Juzgado = :Juzgado,
                 sala = :Sala,
                 Duracion = :Duracion,
-                Puesto = :Puesto,
-                Motivo = :Motivo,
+                Cargo = :Cargo,
                 Observaciones = :Observaciones,
                 Estado = :Estado
                 WHERE ID = :id";
@@ -188,14 +183,7 @@ require_once '../inc/header.php';
 require_once '../inc/navbar_default.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Reservación</title>
-    <!-- Tus estilos CSS aquí -->
-</head>
+
 <body>
     <div class="container-fluid">
         <div class="row">
@@ -209,33 +197,22 @@ require_once '../inc/navbar_default.php';
                     <input type="hidden" name="id" value="<?php echo $reserva->ID; ?>">
 
                     <?php 
-                    $numero_carpeta = str_replace('EXPEDIENTE-', '', $reserva->numeroCarpeta);
+                    $numero_carpeta = str_replace('', '', $reserva->numeroCarpeta);
                     ?>
 
-                    <div class="form-group mb-3">
-                        <label for="numero_carpeta"></label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">EXPEDIENTE-</span>
-                            </div>
-                            <input type="text" class="form-control" id="numero_carpeta" name="numero_carpeta" 
-                                value="<?php echo htmlspecialchars($numero_carpeta); ?>" 
-                                placeholder="1245-2024" pattern="\d{4}-\d{4}" 
-                                oninput="formatExp(this)" 
-                                maxlength="9" 
-                                required>
-                        </div>
-                        <small class="form-text text-muted">Formato correcto: 1245-2024</small>
-                    </div>
+                    
 
                     <div class="row mb-3">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="fecha">Fecha</label>
-                                <input type="date" class="form-control" id="fecha" name="fecha"
-                                value="<?php echo htmlspecialchars($reserva->Fecha); ?>" required>
-                            </div>
+                        
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="fecha">Fecha</label>
+                            <input type="date" class="form-control text-uppercase" id="fecha" name="fecha"
+                            value="<?php echo isset($reserva->Fecha) ? htmlspecialchars($reserva->Fecha) : ''; ?>">
                         </div>
+                    </div>
+
+
 
                         <div class="col-md-4">
                             <div class="form-group">
@@ -256,6 +233,23 @@ require_once '../inc/navbar_default.php';
                     </div>
 
                     <div class="form-group mb-3">
+                        <label for="numero_carpeta"></label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">EXPEDIENTE</span>
+                            </div>
+                            <input type="text" class="form-control" id="numero_carpeta" name="numero_carpeta" 
+                                value="<?php echo htmlspecialchars($numero_carpeta); ?>" 
+                                placeholder="1245-2024" pattern="\d{4}-\d{4}" 
+                                oninput="formatExp(this)" 
+                                maxlength="9" 
+                                required 
+                                readonly>
+                        </div>
+                        <small class="form-text text-muted"></small>
+                    </div>
+
+                    <div class="form-group mb-3">
                         <label for="tipo">Tipo</label>
                         <select class="form-control" id="tipo" name="tipo" required>
                             <option value="AUDIENCIAS CONCILIACIÓN" <?php echo ($reserva->TipoProcedimiento ?? '') == 'AUDIENCIAS CONCILIACIÓN' ? 'selected' : ''; ?>>CONCILIACIÓN</option>
@@ -265,12 +259,7 @@ require_once '../inc/navbar_default.php';
                         </select>
                     </div>
 
-                    <div class="form-group mb-3">
-                        <label for="puesto">Puesto</label>
-                        <input type="text" class="form-control text-uppercase" id="puesto" name="puesto" 
-                            value="<?php echo htmlspecialchars($reserva->Puesto); ?>" 
-                            placeholder="ANALISTA JR 1" required>
-                    </div>
+                   
 
                     <div class="form-group mb-3">
                         <label for="observaciones">Observaciones</label>
@@ -287,12 +276,14 @@ require_once '../inc/navbar_default.php';
                         </select>
                     </div>
 
-                    <div class="form-group mb-4">
-                        <label for="motivo">Motivo</label>
-                        <input type="text" class="form-control text-uppercase" id="motivo" name="motivo"
-                            placeholder="SOLICITUD DE REVISIÓN"
-                            value="<?php echo isset($reserva->Motivo) ? htmlspecialchars($reserva->Motivo) : ''; ?>">
+                    <div class="form-group mb-3">
+                        <label for="cargo">Cargo</label>
+                        <input type="text" class="form-control text-uppercase" id="cargo" name="cargo"
+                            value="<?php echo isset($reserva->Cargo) ? htmlspecialchars($reserva->Cargo) : ''; ?>" 
+                            readonly>
                     </div>
+
+                    
 
                     <div class="form-group mb-4">
                         <label for="juzgado">Juzgado</label>
@@ -322,6 +313,8 @@ require_once '../inc/navbar_default.php';
         </div>
     </div>
 
+    <?php require_once '../inc/footerq.php';?>
+
     <script>
     // Mostrar mensaje si viene en la URL
     const urlParams = new URLSearchParams(window.location.search);
@@ -337,6 +330,93 @@ require_once '../inc/navbar_default.php';
             this.value = this.value.substring(0, 5);
         }
     });
+
+    document.getElementById('fecha').addEventListener('change', function() {
+    // Obtener el valor del input de fecha (formato YYYY-MM-DD)
+    const fechaInput = this.value;
+    
+    if (!fechaInput) return; // Si no hay fecha seleccionada, salir
+    
+    // Crear fechas sin considerar la zona horaria
+    const fechaSeleccionada = new Date(fechaInput + 'T00:00:00');
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0); // Normalizar a medianoche
+    
+    // Comparar las fechas
+    if (fechaSeleccionada < hoy) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Fecha inválida',
+            html: `Has seleccionado <b>${formatDate(fechaSeleccionada)}</b><br>
+                   La fecha no puede ser anterior a <b>${formatDate(hoy)}</b>`,
+            confirmButtonColor: '#fc4848'
+        });
+        this.value = '';
+        this.focus();
+    }
+});
+
+// Función auxiliar para formatear fechas consistentemente
+function formatDate(date) {
+    return date.toLocaleDateString('es-MX', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+}
+
+// Validación de hora (dentro del horario laboral 8:00 AM a 6:00 PM)
+document.getElementById('hora').addEventListener('change', function() {
+    const horaSeleccionada = this.value; // Formato HH:MM
+    const [horas, minutos] = horaSeleccionada.split(':').map(Number);
+    
+    // Convertir a minutos desde medianoche para fácil comparación
+    const minutosTotales = horas * 60 + minutos;
+    const minHoraLaboral = 8 * 60;  // 8:00 AM (480 minutos)
+    const maxHoraLaboral = 18 * 60;  // 6:00 PM (1080 minutos)
+    
+    if (minutosTotales < minHoraLaboral || minutosTotales > maxHoraLaboral) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Horario no disponible',
+            html: '⏰ El horario de atención es de <b>8:00 AM a 6:00 PM</b><br><br>Por favor seleccione un horario dentro de este rango',
+            confirmButtonColor: '#fc4848'
+        });
+        this.value = ''; // Limpiar el campo
+        this.focus(); // Regresar el foco al campo
+    }
+});
+
+ // Si la fecha seleccionada es hoy, validar que no sea hora pasada
+
+
+    // Establecer la fecha mínima como hoy
+
+
+
+// Función para obtener la fecha actual en formato YYYY-MM-DD
+function getCurrentDate() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+// dia anterior no editar, dia actual visible a editar
+
+document.addEventListener('DOMContentLoaded', function() {
+    const fechaInput = document.getElementById('fecha');
+    const today = new Date().toISOString().split('T')[0];
+    
+    // Si hay una fecha establecida y es anterior a hoy
+    if (fechaInput.value && fechaInput.value < today) {
+        fechaInput.readOnly = true;
+    }
+    
+    // Establecer fecha mínima como hoy para evitar seleccionar fechas pasadas
+    fechaInput.min = today;
+});
     </script>
 </body>
 </html>

@@ -44,9 +44,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Validación de campos requeridos
         $campos_requeridos = [
             'numero_carpeta' => "Número de carpeta",
-            'fecha_hora' => "Fecha y hora",
+            'fecha' => "Fecha",
+            'hora' => "Hora",
             'tipo' => "Tipo de procedimiento",
-            'puesto' => "Puesto"
+            
         ];
         
         foreach ($campos_requeridos as $campo => $nombre) {
@@ -59,10 +60,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $datos = [
             'numeroCarpeta' => 'DEMANDA-' . preg_replace('/[^0-9-]/', '', $_POST['numero_carpeta']),
             'TipoProcedimiento' => mb_strtoupper(trim($_POST['tipo'])),
-            'FechaHora' => $_POST['fecha_hora'],
+            'Fecha' => $_POST['fecha'],
             'Duracion' => filter_var($_POST['duracion'], FILTER_VALIDATE_INT, ['options' => ['min_range' => 30]]),
-            'Puesto' => mb_strtoupper(trim($_POST['puesto'])),
-            'Motivo' => isset($_POST['motivo']) ? mb_strtoupper(trim($_POST['motivo'])) : null,
+            'Hora' => $_POST['hora'],
             'Observaciones' => isset($_POST['observaciones']) ? mb_strtoupper(trim($_POST['observaciones'])) : null,
             'Estado' => $_POST['estado'] ?? 'PENDIENTE',
             'id' => $id_reserva
@@ -78,8 +78,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 TipoProcedimiento = :TipoProcedimiento,
                 FechaHora = :FechaHora,
                 Duracion = :Duracion,
-                Puesto = :Puesto,
-                Motivo = :Motivo,
                 Observaciones = :Observaciones,
                 Estado = :Estado
                 WHERE ID = :id";

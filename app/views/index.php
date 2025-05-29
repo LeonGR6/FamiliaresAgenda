@@ -31,7 +31,7 @@
     <li class="list-group-item bg-transparent text-white border-white">📅 Reservar salas de audiencias o espacios institucionales</li>
     <li class="list-group-item bg-transparent text-white border-white">📄 Consultar documentos administrativos y normativas vigentes</li>
     <li class="list-group-item bg-transparent text-white border-white">👤 Acceder al portal administrativo si cuentas con permisos</li>
-    <li class="list-group-item bg-transparent text-white border-white">📞 Contactar a las oficinas para resolver dudas o realizar trámites</li>
+    
   </ul>
 
   <div class="alert alert-transparent text-white border border-white w-75 mx-auto text-center" role="alert">

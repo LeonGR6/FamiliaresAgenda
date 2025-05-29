@@ -47,9 +47,10 @@ require_once 'inc/navbar_app.php';
                         <div class="card bg-primary text-white">
                             <div class="card-body">
                                 <h5 class="card-title">Reservas Hoy</h5>
-                                <h2 class="card-text">15</h2>
+                                <h2 class="card-text"><?php echo 15; ?></h2>
                             </div>
                         </div>
+
                     </div>
                     <div class="col-md-4">
                         <div class="card bg-success text-white">
@@ -59,6 +60,7 @@ require_once 'inc/navbar_app.php';
                             </div>
                         </div>
                     </div>
+                    
                     <div class="col-md-4">
                         <div class="card bg-info text-white">
                             <div class="card-body">
@@ -193,8 +195,8 @@ require_once 'inc/navbar_app.php';
                 events: [
                     {
                         title: 'Audiencia Penal',
-                        start: '2023-06-15T09:00:00',
-                        end: '2023-06-15T11:00:00',
+                        start: '2025-05-15T09:00:00',
+                        end: '2025-05-15T11:00:00',
                         backgroundColor: '#dc3545'
                     },
                     {

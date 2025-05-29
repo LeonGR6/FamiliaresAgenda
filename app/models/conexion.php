@@ -13,3 +13,4 @@ try {
     echo 'error conexion'.$error->getMessage();
     die();
 }
+?>

@@ -63,16 +63,7 @@ try {
 $db = null;
 ?>
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Audiencias</title>
-    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/main.min.css' rel='stylesheet' />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
+
 <body>
     <div class="container-fluid">
         <div class="row justify-content-center">
@@ -86,7 +77,7 @@ $db = null;
                 <div class="row">
                     <div class="col-md-6 mb-4">
                         <div class="card shadow p-4 text-dark h-100 d-flex flex-column">
-                            <h2 class="h4 mb-3">Calendario de Audiencias</h2>
+                            <h2 class="h4 text-dark mb-3">Calendario de Audiencias</h2>
                             <div class="form-group mb-3">
                                 <label for="salaFilter">Filtrar por Sala:</label>
                                 <select class="form-control" id="salaFilter">
@@ -98,15 +89,25 @@ $db = null;
                                     <option value="CAMARA 2">CAMARA GESEL 2</option>
                                 </select>
                             </div>
-                            <div id='calendar' class='text-dark flex-grow-1'></div>
+                            <div id='calendar' class='text-dark flex-grow-1'>
+                            </div>
+                            <div class="row text-center">
+                                <div class="col color-1 p-2 text-dark fw-bold"><div class="rounded p-2 fw-bold" style="background-color: #afda8c;"></div>1° Familiar</div> 
+                                <div class="col color-2 p-2 text-dark fw-bold"><div class="rounded p-2 fw-bold" style="background-color: #8cd6da;"></div>2° Familiar</div>
+                                <div class="col color-3 p-2 text-dark fw-bold"><div class="rounded p-2 fw-bold" style="background-color: #b78cda"></div>3° Familiar</div>
+                                <div class="col color-4 p-2 text-dark fw-bold"><div class="rounded p-2 fw-bold" style="background-color: #da908c"></div>4° Familiar</div>
+                                <div class="col color-5 p-2 text-dark fw-bold"><div class="rounded p-2 fw-bold" style="background-color: #FFEEAD;"></div>6° Familiar</div>
                         </div>
+                        </div>
+                        
                     </div>
+                    
 
                     <div class="col-md-6 mb-4">
                         <form id="formReserva" method="post" class="card shadow p-4 text-dark h-100 d-flex flex-column">
                             <div id="responseMessage" class="alert d-none"></div>
 
-                           <div class="row mb-3">
+                            <div class="row mb-3">
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="fecha">Fecha</label>
@@ -132,31 +133,36 @@ $db = null;
                                     </div>
                                 </div>
                             </div>
-                           
+
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="numero_carpeta"></label>
+                                        <label for="numero_carpeta">EXPEDIENTE</label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text">EXPEDIENTE </span>
+                                                <span class="input-group-text">EXPEDIENTE</span>
                                             </div>
-                                            <input type="text" class="form-control" id="numero_carpeta" name="numero_carpeta"
+                                            <input 
+                                                type="text"
+                                                class="form-control"
+                                                id="numero_carpeta"
+                                                name="numero_carpeta"
                                                 placeholder="NNNN-AAAA"
+                                                inputmode="numeric"
                                                 pattern="\d{4}-\d{4}"
-                                                oninput="this.value = this.value.replace(/[^0-9-]/g, '');"
-                                                onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode === 45"
                                                 maxlength="9"
-                                                required>
-                                            <div class="invalid-feedback">Formato incorrecto</div>
+                                                required
+                                                oninput="this.value = this.value.replace(/\D/g, '').replace(/^(\d{4})(\d{0,4})$/, '$1-$2').substring(0, 9)"
+                                                onkeydown="return event.key !== '-'">
+                                            <div class="invalid-feedback">Formato incorrecto (Debe ser: NNNN-AAAA)</div>
                                         </div>
-                                        <small class="form-text text-muted">Formato correcto: NNNN-AAAA</small>
+                                        <small class="form-text text-muted">Formato correcto:  (Ej: 0155-2025)</small>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="juzgado"></label>
+                                        <label for="juzgado">Juzgado</label>
                                         <select class="form-control" id="juzgado" name="juzgado" required>
                                             <option value="">Seleccione un juzgado</option>
                                             <option value="1° F">1° FAMILIAR</option>
@@ -203,6 +209,13 @@ $db = null;
                                     placeholder="INFORMACIÓN ADICIONAL (OPCIONAL)"></textarea>
                                 <small class="form-text text-muted">Máximo 500 caracteres</small>
                             </div>
+                            
+                            <div>
+                                <label>Usuario: <?php echo htmlspecialchars($_SESSION['nombre']); ?></label>
+                            </div>
+                            <div>
+                                <label>Cargo: <?php echo htmlspecialchars($_SESSION['cargo']); ?></label>
+                            </div>
 
                             <input type="hidden" name="estado" value="Pendiente">
                             <input type="hidden" name="oculto" value="1">
@@ -224,6 +237,19 @@ $db = null;
         </div>
     </div>
 
+    <style>
+    #infooral-img {
+        position: fixed;
+        bottom: 15px;
+        right: 15px;
+        z-index: 9999;
+        width: 160px; /* Tamaño grande */
+        height: auto;
+    }
+</style>
+<img id="infooral-img" src="/mvc-php/public/images/infooral.png" alt="Info Oral">
+
+
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.11/locales-all.global.min.js'></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -232,6 +258,7 @@ $db = null;
         // Pasar los eventos del calendario a JavaScript
         window.allEvents = <?php echo $citas_json; ?>;
     </script>
+
     <script>
         document.getElementById('formReserva').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -262,11 +289,15 @@ $db = null;
                     icon: data.success ? 'success' : 'error',
                     title: data.success ? 'Éxito' : 'Error',
                     text: data.message,
-                    confirmButtonColor: '#fc4848'
+                    confirmButtonColor: '#fc4848',
+                    willClose: () => {  // Se ejecuta justo antes de cerrar
+                    location.reload();
+                        }
                 });
                 
                 // Si fue éxito, limpiar formulario
                 if (data.success) {
+                    
                     document.getElementById('formReserva').reset();
                     // Refrescar el calendario después de un nuevo registro
                     if (typeof calendar !== 'undefined') {
@@ -446,7 +477,7 @@ $db = null;
                             <p><strong>Hora:</strong> ${info.event.start.toLocaleTimeString('es-ES', {hour: '2-digit', minute:'2-digit'})}</p>
                             <p><strong>Espacio:</strong> ${info.event.extendedProps.sala}</p>
                             <p><strong>Duración:</strong> ${info.event.extendedProps.duracion} minutos</p>
-                            <p><strong>Puesto:</strong> ${info.event.extendedProps.puesto}</p>
+                            
                         `,
                         icon: 'info',
                         confirmButtonText: 'Cerrar',
@@ -459,6 +490,7 @@ $db = null;
             calendar.render();
             // Asignar el objeto calendar a una variable global o accesible para el formulario
             window.calendar = calendar;
+            
 
             document.getElementById('salaFilter').addEventListener('change', function() {
                 calendar.refetchEvents();
@@ -472,9 +504,77 @@ $db = null;
                 }
             });
         });
+
+        // Nuevo: Event listener para el campo de hora y duracion del formulario
+        document.getElementById('hora').addEventListener('change', function() {
+            const selectedTime = this.value; // Obtiene la hora seleccionada en formato HH:MM
+            if (selectedTime) {
+                const fechaInput = document.getElementById('fecha');
+                const selectedDate = fechaInput.value; // Obtiene la fecha seleccionada
+                if (selectedDate) {
+                     
+                }
+            }
+        });
+
+
+        let reservaPreview = null;
+
+// Función para actualizar el preview
+function updateReservaPreview() {
+    const fecha = document.getElementById('fecha').value;
+    const hora = document.getElementById('hora').value;
+    const duracion = document.getElementById('duracion').value;
+    
+    // Validar datos completos
+    if (!fecha || !hora || !duracion) {
+        if (reservaPreview) {
+            reservaPreview.remove();
+            reservaPreview = null;
+        }
+        return;
+    }
+    
+    // Eliminar preview anterior si existe
+    if (reservaPreview) {
+        reservaPreview.remove();
+    }
+    
+    // Crear nuevo preview
+    const start = `${fecha}T${hora}`;
+    const end = new Date(new Date(start).getTime() + duracion * 60000).toISOString();
+    
+    reservaPreview = calendar.addEvent({
+        id: 'preview-reserva',
+        title: `Previsualización (${duracion} min)`,
+        start: start,
+        end: end,
+        color: '#6c757d',
+        display: 'auto',
+        extendedProps: {
+            isPreview: true,
+            numeroCarpeta: 'Vista Previa de Reserva Actual',
+            tipoProcedimiento: 'Previsualización',
+            duracion: duracion,
+            sala: 'Previsualización',
+            juzgado: 'Previsualización'
+        },
+        className: 'preview-event'
+    });
+}
+
+// Event listeners para hora y duración
+document.getElementById('hora').addEventListener('change', updateReservaPreview);
+document.getElementById('duracion').addEventListener('input', updateReservaPreview);
+
+        
+
+
+        
         
         const style = document.createElement('style');
         style.textContent = `
+            
             #event-tooltip {
                 position: fixed;
                 display: none;

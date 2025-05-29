@@ -1,57 +1,56 @@
 <?php
-
-// Incluir archivo de configuración de la base de datos
 include("../models/conexion.php");
 
 try {
-    // Consulta SQL modificada para incluir duración
     $sql = "SELECT 
-                ID AS id, 
-                Motivo AS title, 
-                NumeroCarpeta,
-                TipoProcedimiento,
-                Fecha, 
-                Hora, 
-                Duracion,
-                Puesto,
-                Juzgado,
-                Sala
-            FROM Reservas
-            "; // Filtro opcional
+                r.ID AS id,
+                r.NumeroCarpeta,
+                r.TipoProcedimiento,
+                r.Fecha, 
+                r.Hora, 
+                r.Duracion,
+                r.cargo,
+                r.Nombre,
+                r.Juzgado,
+                r.Sala,
+                r.Estado,
+                r.Observaciones
+            FROM Reservas r
+            JOIN usuarios u ON r.usuario_id = u.id"; // Asumiendo que reservas.usuario_id relaciona con usuarios.id
     
     $stmt = $db->prepare($sql);
     $stmt->execute();
 
-    // Procesar las citas para el formato de FullCalendar
     $citas = [];
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $start = new DateTime($row['Fecha'] . ' ' . $row['Hora']);
-        $duracion = $row['Duracion'] ?? 30; // Duración predeterminada de 30 minutos si es NULL
+        $duracion = $row['Duracion'] ?? 30;
         
         $citas[] = [
             'id' => $row['id'],
-            'title' => $row['title'],
-            'numeroCarpeta' => $row['NumeroCarpeta'], // Asegúrate de incluir este campo
+      
+            'numeroCarpeta' => $row['NumeroCarpeta'],
             'juzgado' => $row['Juzgado'],
             'start' => $start->format('Y-m-d\TH:i:s'),
             'end' => $start->modify("+{$duracion} minutes")->format('Y-m-d\TH:i:s'),
             'extendedProps' => [
-                'puesto' => $row['Puesto'],
+                'cargo' => $row['cargo'],
                 'duracion' => $duracion,
                 'tipoProcedimiento' => $row['TipoProcedimiento'],
-                'sala' => $row['Sala']
+                'sala' => $row['Sala'],
+                'estado' => $row['Estado'],
+                'observaciones' => $row['Observaciones'],
+                
+                'fecha' => $row['Fecha']
             ],
-            'className' => 'duracion-' . $duracion, // Clase CSS para la duración
-            'className' => 'juzgado-' . preg_replace('/\D/', '', $row['Juzgado']) // Clase CSS para el juzgado
+            'className' => 'juzgado-' . preg_replace('/\D/', '', $row['Juzgado'])
         ];
     }
     
-    $citas_json = json_encode($citas);
+    $citas_json = json_encode($citas, JSON_UNESCAPED_UNICODE);
 } catch (PDOException $e) {
     error_log("Error en la base de datos: " . $e->getMessage());
     $citas_json = '[]';
-    
-    
 }
 
 $db = null;
@@ -80,8 +79,9 @@ document.addEventListener('DOMContentLoaded', function() {
         slotMinTime: '08:00:00',
         slotMaxTime: '18:00:00',
         headerToolbar: {
-            left: 'prev,next today',
             center: 'title',
+            left: 'prev,next today',
+      
             right: 'dayGridMonth,timeGridWeek,timeGridDay,listDay'
         },
         
@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 content.innerHTML = `
                     <div style="display: flex; justify-content: space-between;">
                         <div>${arg.timeText}</div>
-                        <div><strong>${arg.event.title}</strong></div>
+                         <div><strong>${arg.event.extendedProps.tipoProcedimiento}</strong></div>
                         <div>${arg.event.extendedProps.numeroCarpeta}</div>
                     </div>
                 `;
@@ -199,14 +199,20 @@ document.addEventListener('DOMContentLoaded', function() {
             Swal.fire({
                 title: info.event.extendedProps.numeroCarpeta,
                 html: `
+
                     <p><strong>Tipo:</strong> ${info.event.extendedProps.tipoProcedimiento}</p>
-                    <p><strong>Motivo:</strong> ${info.event.title}</p>
-                    <p><strong>Juzgado:</strong> ${info.event.extendedProps.juzgado}</p>
-                    <hr>
-                    <p><strong>Hora:</strong> ${info.event.start.toLocaleTimeString('es-ES')}</p>
-                    <p><strong>Espacio:</strong> ${info.event.extendedProps.sala}</p>
+                    <hr style="margin: 20px 0; border-top: 3px solid #eee;">
                     <p><strong>Duración:</strong> ${info.event.extendedProps.duracion} minutos</p>
-                    <p><strong>Puesto:</strong> ${info.event.extendedProps.puesto}</p>
+                    <p><strong>Fecha:</strong> ${info.event.extendedProps.fecha}</p>
+                    <p><strong>Hora:</strong> ${info.event.start.toLocaleTimeString('es-ES')}</p>
+                    <hr style="margin: 20px 0; border-top: 3px solid #eee;">
+                    <p><strong>Espacio:</strong> ${info.event.extendedProps.sala}</p>
+                    <p><strong>Juzgado:</strong> ${info.event.extendedProps.juzgado}</p>
+                    <p><strong>Estado:</strong> <span class="badge text-light ${getEstadoClass(info.event.extendedProps.estado)}">
+                    ${info.event.extendedProps.estado}
+                    </span></p>
+                    <hr style="margin: 20px 0; border-top: 3px solid #eee;">
+
                 `,
                 icon: 'info',
                 confirmButtonText: 'Cerrar',
@@ -215,12 +221,22 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     });
+    function getEstadoClass(estado) {
+        const clases = {
+            'Pendiente': 'bg-warning',
+            'Confirmado': 'bg-success',
+            'Cancelado': 'bg-danger'
+        };
+        return clases[estado] || 'bg-secondary';
+    }
+
     
     calendar.render();
       document.getElementById('salaFilter').addEventListener('change', function() {
         calendar.refetchEvents();
     });
 });
+
   
 
 const style = document.createElement('style');
@@ -323,6 +339,8 @@ style.textContent = `
         border-color: #86b7fe;
         box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
     }
+
+    
     `;
 document.head.appendChild(style);
 

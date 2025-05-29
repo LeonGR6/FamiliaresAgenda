@@ -5,15 +5,36 @@ if (!isset($_SESSION['usuario_id'])) {
     header("Location: ../views/login.php");
     exit();
 }
-?>
- <?php
-    require_once 'inc/header.php'; 
-    require_once 'inc/navbar_app.php'; 
 
-    include '../models/conexion.php';
-    $sentencia = $db->query("SELECT * FROM reservas;");
+require_once 'inc/header.php'; 
+require_once 'inc/navbar_app.php'; 
+include '../models/conexion.php';
+
+// CONSULTA CON MANEJO DE ERRORES
+try {
+    $sentencia = $db->query("SELECT 
+        r.ID, 
+        r.numeroCarpeta, 
+        r.Juzgado, 
+        r.Fecha, 
+        TIME_FORMAT(r.Hora, '%H:%i') as Hora,
+        r.Sala, 
+        r.Duracion,
+        r.TipoProcedimiento, 
+        r.Cargo, 
+        r.Nombre,
+        r.Observaciones,
+        r.Estado,
+        r.usuario_id,
+        u.cargo
+    FROM reservas r
+    JOIN usuarios u ON r.usuario_id = u.id");
+    
     $dato = $sentencia->fetchAll(PDO::FETCH_OBJ);
-    ?>
+} catch(PDOException $e) {
+    die("Error al cargar reservas: " . $e->getMessage());
+}
+?>
 
 
 <body>
@@ -38,15 +59,17 @@ if (!isset($_SESSION['usuario_id'])) {
                 <table class="table table-striped mb-0" id="tablaReservas">
                     <thead class="table-dark ">
                         <tr>
-                        <th>JUZGADO</th>
-                            <th>N° CARPETA</th>
+                            <th>JUZGADO</th>
+                            <th>N° EXPEDIENTE</th>
                             <th>FECHA</th>
                             <th>ESPACIO</th>
                             <th>HORA</th>
                             <th>DURACIÓN</th>
+                            <th>CARGO</th>
+                            <th>NOMBRE</th>
                             <th>TIPO</th>
+                            
                             <th>OBSERVACIONES</th>
-                            <th>MOTIVO</th>
                             
                             <th>ESTADO</th>
                             <th>ACCIONES</th>
@@ -61,11 +84,13 @@ if (!isset($_SESSION['usuario_id'])) {
                                 <td><?php echo $registro->Sala; ?></td>
                                 <td><?php echo $registro->Hora; ?></td>
                                 <td><?php echo $registro->Duracion; ?></td>
+                                <td><?php echo $registro->Cargo; ?></td>
+                                <td><?php echo $registro->Nombre; ?></td>
                                 <td><?php echo $registro->TipoProcedimiento; ?></td>
 
                                 
                                 <td><?php echo substr($registro->Observaciones, 0, 30) . (strlen($registro->Observaciones) > 30 ? '...' : ''); ?></td>
-                                <td><?php echo $registro->Motivo; ?></td>
+                                
                                 
                                 <td>
                                     <?php
@@ -84,15 +109,36 @@ if (!isset($_SESSION['usuario_id'])) {
                                 </td>
                                 <td>
                                 <div class="d-flex">
+                                    
+
                                         <a href="modals/editar_reserva.php?id=<?php echo $registro->ID; ?>" 
                                         class="btn btn-warning btn-sm me-2" 
                                         title="Editar esta reserva">
                                              Editar
                                         </a>
                                         <div style="border: .1px solid white; height: 30px; margin: 0 1px;"></div>
-                                        <button class="btn btn-danger btn-eliminar btn-sm" data-id="<?php echo $registro->ID; ?>">
-                                            Eliminar
+                                        <button class="btn btn-primary btn-ver btn-sm" 
+                                                data-id="<?php echo $registro->ID; ?>"
+                                                data-numero-carpeta="<?php echo $registro->numeroCarpeta; ?>"
+                                                data-juzgado="<?php echo $registro->Juzgado; ?>"
+                                                data-fecha="<?php echo $registro->Fecha; ?>"
+                                                data-hora="<?php echo $registro->Hora; ?>"
+                                                data-sala="<?php echo $registro->Sala; ?>"
+                                                data-duracion="<?php echo $registro->Duracion; ?>"
+                                                data-cargo="<?php echo $registro->cargo ?? 'Espectador'; ?>"
+                                                data-tipo="<?php echo $registro->TipoProcedimiento; ?>"
+                                                
+                                                data-observaciones="<?php echo htmlspecialchars($registro->Observaciones ?? ''); ?>">
+                                            <i class=""></i> Ver
                                         </button>
+
+                                        <div style="border: .1px solid white; height: 30px; margin: 0 1px;"></div>
+
+
+                                      <button class="btn btn-danger btn-eliminar btn-sm" data-id="<?php echo $registro->ID; ?>">
+                                            Eliminar
+                                        </button>  
+
                                     </div>
                                 </td>
                             </tr>
@@ -105,152 +151,44 @@ if (!isset($_SESSION['usuario_id'])) {
     </div>
 
     <?php include("inc/footerq.php"); ?>
+    <script src="/mvc-php/public/js/registro-app.js"></script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!-- Cambio 2: Script actualizado (solo este bloque se modifica) -->
     <script>
-$(document).ready(function() {
-    // 1. Inicialización de DataTable
-    $('#tablaReservas').DataTable({
-       
-
-        "language": {
-            "lengthMenu": "Mostrar _MENU_ registros por página",
-            "zeroRecords": "No se encontraron resultados",
-            "info": "Mostrando página _PAGE_ de _PAGES_",
-            "infoEmpty": "No hay registros disponibles",
-            "infoFiltered": "(filtrado de _MAX_ registros totales)",
-            "search": "Buscar:",
-            "paginate": {
-                "first": "Primero",
-                "last": "Último",
-                "next": "Siguiente",
-                "previous": "Anterior"
-            }
-        },
-    "dom": '<"top"lf>rt<"bottom"ip>',
-    "initComplete": function(settings, json) {
-        // Agregar atributos al campo de búsqueda
-        $('.dataTables_filter input')
-            .attr('id', 'tablaSearch')
-            .attr('name', 'search');
-    }
-});
-
-
-
-    // 2. Manejo del formulario de reserva
-    $('#formReserva').on('submit', function(e) {
-    e.preventDefault();
-    var btn = $('#btnSubmit');
-    var form = $(this);
-    
-    // Mostrar loading
-    btn.prop('disabled', true).text('Procesando...');
-    
-    // Formatear fecha correctamente antes de enviar (para el formato MySQL)
-    let fechaInput = $('#fecha_hora').val();
-    let fechaFormateada = fechaInput.replace('T', ' ') + ':00';
-    
-    $.ajax({
-        url: '../controllers/insert.php',
-        type: 'POST',
-        data: form.serialize() + '&fecha_hora_formatted=' + encodeURIComponent(fechaFormateada),
-        dataType: 'json',
-        success: function(response) {
-            if(response.success) {
-                // Mostrar alerta de éxito con detalles
-                alert('✅ RESERVA EXITOSA\n\n' +
-                     'Número: EXP' + response.data.numero_carpeta + '\n' +
-                     'Fecha: ' + formatDate(response.data.fecha_hora) + '\n' +
-                     'Tipo: ' + response.data.tipo);
+ $(document).ready(function() {
+        $(document).on('click', '.btn-ver', function() {
+            const registro = $(this).data();
+            
+            Swal.fire({
+                title: `<br> 📋 Detalles de Reserva (ID: ${registro.id})`, 
                 
-                // Cerrar modal y recargar
-                $('#modalReserva').modal('hide');
-                setTimeout(function() {
-                    location.reload();
-                }, 1500);
-            } else {
-                // Mostrar errores de validación
-                if(response.errors) {
-                    alert('❌ ERRORES:\n\n- ' + response.errors.join('\n- '));
-                } else {
-                    alert('❌ ERROR: ' + response.message);
-                }
-            }
-        },
-        error: function(xhr) {
-            alert('⚠️ ERROR DE CONEXIÓN: ' + xhr.statusText);
-        },
-        complete: function() {
-            btn.prop('disabled', false).text('Enviar');
-        }
+                html: ` <hr style="margin: 20px 0; border-top: 3px solid #eee;"> <br> 
+                    <div style="text-align: center;">
+                        <p><strong>Expediente:</strong> ${registro.numeroCarpeta || 'No especificado'}</p>
+                        <p><strong>Tipo:</strong> ${registro.tipo}</p>
+                        <p><strong>Duración:</strong> ${registro.duracion} minutos</p>
+                        <hr style="margin: 20px 0; border-top: 3px solid #eee;">
+                        <p><strong>Fecha:</strong> ${registro.fecha}</p>
+                        <p><strong>Hora:</strong> ${registro.hora}</p>
+                        
+                        <p><strong>Espacio:</strong> ${registro.sala}</p>
+                        <p><strong>Juzgado:</strong> ${registro.juzgado}</p>
+                        <hr style="margin: 20px 0; border-top: 3px solid #eee;">
+                        <p><strong>Cargo:</strong> ${registro.cargo || 'Espectador'}</p>
+                        
+                        <p><strong>Observaciones:</strong></p>
+                        <div >
+                            ${registro.observaciones || 'Ninguna'}
+                        </div>
+                    </div>
+                `,
+                
+                confirmButtonText: 'Cerrar',
+                confirmButtonColor: '#fc4848',
+                width: '600px'
+                
+        });
     });
 });
-
-// Función para formatear fecha legible
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('es-ES', { 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    });
-}
-    
-
-    // 3. Manejo de eliminación
-
-    $('.btn-eliminar').on('click', function(e) {
-    e.preventDefault();
-    const id = $(this).data('id');
-    
-    if (!confirm('⚠️ ¿Seguro que deseas eliminar esta reserva?')) return;
-    
-    $.ajax({
-        url: '../controllers/delete_reserva.php',
-        method: 'POST',
-        data: { id: id },
-        dataType: 'json',
-        success: function(response) {
-            if (response.success) {
-                alert(response.message);
-                location.reload();
-            } else {
-                alert(' ❌ Error: ' + response.message);
-            }
-        },
-        error: function(xhr) {
-            alert(' ❌ Error de conexión: ' + xhr.responseText);
-        }
-    });
-});
-});
-
-
-
 </script>
 </body>
 </html>

@@ -21,7 +21,7 @@
             <ul class="navbar-nav me-auto mb-2 mb-md-0">
                 <li class="nav-item">
                     <a class="nav-link mx-2" href="../registro-app.php" id="nav-inicio">
-                        <i class="fas fa-home me-1"></i> Registro
+                        <i class="fas fa-file-alt me-1"> </i> Registro
                     </a>
                 </li>
             </ul>
