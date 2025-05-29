@@ -120,30 +120,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $minutosInicio = $horaInicio[0] * 60 + $horaInicio[1];
         $minutosFin = $minutosInicio + $datos['Duracion'];
 
-        $sqlSolapamiento = "SELECT ID, Hora, Duracion FROM reservas 
-                           WHERE Fecha = :Fecha
-                            AND Sala = :Sala 
-                           AND ID != :id";
-        $stmtSolapamiento = $db->prepare($sqlSolapamiento);
-        $stmtSolapamiento->execute([
-            'Fecha' => $datos['Fecha'],
-            'Sala' => $datos['Sala'],
-            'id' => $id_reserva
-        ]);
+        // Verificar solapamiento con otras reservas (incluyendo margen de 10 minutos)
+$sqlSolapamiento = "SELECT COUNT(*) as count FROM reservas 
+WHERE Fecha = :Fecha
+AND Sala = :Sala 
+AND ID != :id
+AND (
+    /* Reservas existentes que solapan con el inicio de la nueva reserva (incluyendo margen) */
+    (Hora <= :Hora AND ADDTIME(Hora, SEC_TO_TIME((Duracion + 10) * 60)) > :Hora)
+    OR 
+    /* Reservas existentes que solapan con el fin de la nueva reserva (incluyendo margen) */
+    (Hora < ADDTIME(:Hora, SEC_TO_TIME((:Duracion + 10) * 60)) 
+     AND ADDTIME(Hora, SEC_TO_TIME(Duracion * 60)) >= ADDTIME(:Hora, SEC_TO_TIME(:Duracion * 60)))
+)";
 
-        while ($otraReserva = $stmtSolapamiento->fetch(PDO::FETCH_OBJ)) {
-            $otraHora = explode(':', $otraReserva->Hora);
-            $otraMinutosInicio = $otraHora[0] * 60 + $otraHora[1];
-            $otraMinutosFin = $otraMinutosInicio + $otraReserva->Duracion;
-            
-            if (($minutosInicio >= $otraMinutosInicio && $minutosInicio < $otraMinutosFin) ||
-                ($minutosFin > $otraMinutosInicio && $minutosFin <= $otraMinutosFin) ||
-                ($minutosInicio <= $otraMinutosInicio && $minutosFin >= $otraMinutosFin)) {
-                
-                $horaFormateada = date("g:i a", strtotime($otraReserva->Hora));
-                throw new Exception("❌ La reserva se solapa con otra existente a las $horaFormateada (dura $otraReserva->Duracion minutos)");
-            }
-        }
+$stmtSolapamiento = $db->prepare($sqlSolapamiento);
+$stmtSolapamiento->execute([
+'Fecha' => $datos['Fecha'],
+'Sala' => $datos['Sala'],
+'id' => $id_reserva,
+'Hora' => $datos['Hora'],
+'Duracion' => $datos['Duracion']
+]);
+
+$result = $stmtSolapamiento->fetch(PDO::FETCH_OBJ);
+
+if ($result->count > 0) {
+$horaFinConMargen = date('H:i', strtotime("+".($datos['Duracion']+10)." minutes", strtotime($datos['Hora'])));
+$tipoMostrar = (strpos($datos['Sala'], 'SALA') !== false) ? 'salas' : 'cámaras Gesell';
+
+throw new Exception("No hay {$tipoMostrar} disponibles para el horario solicitado (incluyendo 10 minutos para desocupar el espacio).");
+}
 
         // Actualización en base de datos
         $sql = "UPDATE reservas SET
