@@ -1,18 +1,46 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: ../views/login.php");
+    exit();
+}
+
 require_once '../models/conexion.php';
 
+// Verificar si la conexión existe
 if (!isset($db)) {
     die("Error: No se pudo establecer conexión a la base de datos");
 }
 
-$query = $db->prepare("SELECT id, nombre, username, email, cargo, created_at FROM usuarios ORDER BY created_at DESC");
-$query->execute();
-$usuarios = $query->fetchAll(PDO::FETCH_ASSOC);
+// Obtener el cargo del usuario actual
+$query = $db->prepare("SELECT cargo FROM usuarios WHERE id = ?");
+$query->execute([$_SESSION['usuario_id']]);
+$user = $query->fetch(PDO::FETCH_ASSOC);
+
+// Guardar si es administrador en una variable
+$isAdmin = ($user['cargo'] === 'Administrador');
+
+// Solo cargar los usuarios si es administrador
+$usuarios = [];
+if ($isAdmin) {
+    $query = $db->prepare("SELECT id, nombre, username, email, cargo, created_at FROM usuarios ORDER BY created_at DESC");
+    $query->execute();
+    $usuarios = $query->fetchAll(PDO::FETCH_ASSOC);
+}
 
 include 'inc/header.php';
 include 'inc/navbar_app.php';
 ?>
 
+<script>
+    <?php if (!$isAdmin): ?>
+        alert("⚠️ Acceso restringido\n\nEste módulo es solo para administradores.");
+        window.location.href = "inicio.php"; // Redirige a otra página
+    <?php endif; ?>
+</script>
+
+<?php if ($isAdmin): ?>
 <div class="container-fluid">
     <div class="row">
         <div class="container-fluid col-md-12 col-lg-10 mx-auto mt-4 mb-5">
@@ -82,6 +110,8 @@ include 'inc/navbar_app.php';
         </div>
     </div>
 </div>
+
+<?php endif; ?>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

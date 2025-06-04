@@ -9,30 +9,63 @@ if (!isset($_SESSION['usuario_id'])) {
 require_once 'inc/header.php';
 require_once 'inc/navbar_app.php';
 ?>
-
 <body class="bg-light">
+    <!-- Botón para abrir el sidebar - Solo visible en móviles -->
+    <button class="btn btn-primary d-lg-none fixed-top m-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#mainSidebar">
+        <i class="fas fa-bars me-2"></i> Menú
+    </button>
+
     <div class="container-fluid">
         <div class="row">
-            <!-- Sidebar -->
-            <div class="col-md-3 col-lg-2 d-md-block bg-dark sidebar collapse">
+            <!-- Sidebar como Offcanvas en móviles y sidebar normal en desktop -->
+            <div class="col-lg-2 d-none d-lg-block bg-dark sidebar">
                 <div class="position-sticky pt-3">
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a class="nav-link active text-white" href="#">
-                                <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                                <i class="fas fa-tachometer-alt me-2"></i> Dashboard
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-white" href="#reservas">
-                                <i class="fas fa-calendar-check me-2"></i>Reservas
+                                <i class="fas fa-calendar-check me-2"></i> Reservas
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-white" href="#estadisticas">
-                                <i class="fas fa-chart-bar me-2"></i>Estadísticas
+                                <i class="fas fa-chart-bar me-2"></i> Estadísticas
                             </a>
                         </li>
                     </ul>
+                </div>
+            </div>
+
+            <!-- Versión Offcanvas para móviles -->
+            <div class="offcanvas offcanvas-start bg-dark d-lg-none" tabindex="-1" id="mainSidebar">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title text-white">Menú Principal</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body p-0">
+                    <div class="position-sticky pt-3">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link active text-white" href="#">
+                                    <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="#reservas">
+                                    <i class="fas fa-calendar-check me-2"></i> Reservas
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="#estadisticas">
+                                    <i class="fas fa-chart-bar me-2"></i> Estadísticas
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
@@ -75,7 +108,7 @@ require_once 'inc/navbar_app.php';
                 <div class="row mb-4" id="reservas">
                     <div class="col-12">
                         <div class="card">
-                            <div class="card-header">
+                            <div class="card-header bg-secondary">
                                 <h5>Acciones Rápidas</h5>
                             </div>
                             <div class="card-body">
@@ -99,7 +132,7 @@ require_once 'inc/navbar_app.php';
                 <div class="row">
                     <div class="col-md-6">
                         <div class="card">
-                            <div class="card-header">
+                            <div class="card-header bg-secondary">
                                 <h5>Calendario de Reservas</h5>
                             </div>
                             <div class="card-body">
@@ -110,11 +143,11 @@ require_once 'inc/navbar_app.php';
                     
                     <div class="col-md-6">
                         <div class="card">
-                            <div class="card-header">
+                            <div class="card-header bg-secondary">
                                 <h5>Reservas Recientes</h5>
                             </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
+                            <div class="card-body ">
+                                <div class="table-responsive ">
                                     <table class="table table-hover">
                                         <thead>
                                             <tr>
@@ -269,6 +302,7 @@ require_once 'inc/navbar_app.php';
                 }]
             }
         });
+
     </script>
 </body>
 </html>

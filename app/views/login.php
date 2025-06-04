@@ -39,7 +39,7 @@
                                 <button type="submit" class="btn sanclear btn-block fw-bold rounded-pill py-2">Iniciar Sesión</button>
                             </div>
                             <div class="text-center mt-3">
-                                <a href="/mvc-php/app/views/registro.php" class="text-dark">¿No tienes una cuenta? Regístrate</a>
+                                <a href="contactanos.php" class="text-dark">¿No tienes una cuenta? Contacta al administrador para regístrate</a>
                             </div>
                             
 

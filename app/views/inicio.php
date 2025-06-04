@@ -56,20 +56,24 @@ require_once 'inc/navbar_app.php';
                     </div>
                 </a>
             </div>
+            
             <!-- Card Usuarios -->
-            <div class="col-md-3">
-                <a href="usuarios.php" class="module-card-link">
-                    <div class="card module-card text-center shadow h-100">
-                        <div class="card-body d-flex flex-column align-items-center justify-content-center">
-                            <div class="module-icon mb-3">
-                                <i class="fas fa-users"></i>
-                            </div>
-                            <h5 class="card-title">Usuarios</h5>
-                            <p class="card-text">Administra los usuarios del sistema.</p>
-                        </div>
+            <?php if ($isAdmin): ?>
+    <div class="col-md-3">
+        <a href="usuarios.php" class="module-card-link">
+            <div class="card module-card text-center shadow h-100">
+                <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                    <div class="module-icon mb-3">
+                        <i class="fas fa-users"></i>
                     </div>
-                </a>
+                    <h5 class="card-title">Usuarios</h5>
+                    <p class="card-text">Administra los usuarios del sistema.</p>
+                </div>
             </div>
+        </a>
+    </div>
+<?php endif; ?>
+
         </div>
     </div>
     <style>

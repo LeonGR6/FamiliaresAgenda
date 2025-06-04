@@ -43,16 +43,27 @@
                         <i class="fas fa-address-book me-1"></i> Contactos
                     </a>
                 </li> -->       
+<?php
+// Verificar si la variable ya está definida, si no, obtenerla
+if (!isset($isAdmin)) {
+    require_once '../models/conexion.php';
+    $query = $db->prepare("SELECT cargo FROM usuarios WHERE id = ?");
+    $query->execute([$_SESSION['usuario_id']]);
+    $user = $query->fetch(PDO::FETCH_ASSOC);
+    $isAdmin = ($user['cargo'] === 'Administrador');
+}
+?>
 
-                <li class="nav-item">
-                    <a class="nav-link mx-2" href="usuarios.php" id="nav-usuarios">
-                        <i class="fas fa-user-cog me-1"></i> usuarios
-                    </a>
-                </li>
+<li class="nav-item">
+    <?php if ($isAdmin): ?>
+        <a class="nav-link mx-2" href="usuarios.php" id="nav-usuarios">
+            <i class="fas fa-user-cog me-1"></i> Usuarios
+        </a>
+    <?php endif; ?>
+</li>
 
-                
-                
-                <!-- Reportes 
+
+                <!-- Reportes
                  <li class="nav-item">
                     <a class="nav-link mx-2" href="reportes.php" id="nav-reportes">
                         <i class="fas fa-chart-bar me-1"></i> Reportes
@@ -91,6 +102,8 @@
 <!-- Font Awesome para iconos -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <link rel="stylesheet" href="/mvc-php/public/css/navbar_app.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
 <script src="/mvc-php/public/js/navbar_app.js"></script>
 

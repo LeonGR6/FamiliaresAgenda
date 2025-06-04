@@ -1,5 +1,32 @@
-<?php require_once 'inc/header.php'; ?>
-<?php require_once 'inc/defnavbar.php'; ?>
+<?php
+session_start();
+
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: ../views/login.php");
+    exit();
+}
+
+require_once '../models/conexion.php';
+
+// Verificar si la conexión existe
+if (!isset($db)) {
+    die("Error: No se pudo establecer conexión a la base de datos");
+}
+
+// Obtener el cargo del usuario actual
+$query = $db->prepare("SELECT cargo FROM usuarios WHERE id = ?");
+$query->execute([$_SESSION['usuario_id']]);
+$user = $query->fetch(PDO::FETCH_ASSOC);
+
+// Verificar si el usuario es administrador
+if ($user['cargo'] !== 'Administrador') {
+    header("Location: inicio.php"); // o la página que corresponda
+    exit();
+}
+
+require_once 'inc/header.php'; 
+require_once 'inc/defnavbar.php'; 
+?>
 
 <body>
     <div class="container mt-3 mt-md-5">
