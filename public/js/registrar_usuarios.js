@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Si fue exitoso, redirigir después de cerrar el alert
                 if (data.success) {
-                    window.location.href = '/mvc-php/app/views/usuarios.php';
+                    window.location.href = '/SIADO-PJAGS/app/views/usuarios.php';
                 }
             })
             .catch(error => {

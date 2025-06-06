@@ -12,7 +12,7 @@ include '../models/conexion.php';
 
 // CONSULTA CON MANEJO DE ERRORES
 try {
-    $sentencia = $db->query("SELECT 
+    $sql = "SELECT 
         r.ID, 
         r.numeroCarpeta, 
         r.Juzgado, 
@@ -25,11 +25,13 @@ try {
         r.Nombre,
         r.Observaciones,
         r.Estado,
-        r.usuario_id,
+        u.nombre as nombre_usuario,
         u.cargo
     FROM reservas r
-    JOIN usuarios u ON r.usuario_id = u.id");
+    LEFT JOIN usuarios u ON r.usuario_id = u.id
+    ORDER BY r.Fecha DESC, r.Hora DESC";
     
+    $sentencia = $db->query($sql);
     $dato = $sentencia->fetchAll(PDO::FETCH_OBJ);
 } catch(PDOException $e) {
     die("Error al cargar reservas: " . $e->getMessage());
@@ -47,7 +49,7 @@ try {
                 <br>
                 
                 <div class="">
-                    <a href="modals/registrar_reserva.php" class="btn btn-outline-success border">
+                    <a href="modals/registrar_reserva.php" class="btn btn-outline-success ">
                        <i class="fas fa-calendar"></i> Iniciar reserva
                     </a>
                 </div>
@@ -151,7 +153,7 @@ try {
     </div>
 
     <?php include("inc/footerq.php"); ?>
-    <script src="/mvc-php/public/js/registro-app.js"></script>
+    <script src="/SIADO-PJAGS/public/js/registro-app.js"></script>
 
     <script>
  $(document).ready(function() {

@@ -132,6 +132,6 @@ require_once 'inc/navbar_app.php';
     </style>
     <!-- Font Awesome CDN para iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <img id="infooral-img" src="/mvc-php/public/images/infooral.png" alt="Info Oral">
+    <img id="infooral-img" src="/SIADO-PJAGS/public/images/infooral.png" alt="Info Oral">
 </body>
 <?php include("inc/footerq.php"); ?>

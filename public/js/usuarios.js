@@ -47,7 +47,7 @@
         boton.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Guardando...');
         
         $.ajax({
-            url: '../controllers/update_usuario.php',
+            url: '../controllers/update_usuario',
             type: 'POST',
             data: {
                 id: id,
@@ -98,7 +98,7 @@
     boton.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Eliminando...');
 
     $.ajax({
-        url: '../controllers/delete_usuario.php',
+        url: '../controllers/delete_usuario',
         type: 'POST',
         data: { id: id },
         dataType: 'json',

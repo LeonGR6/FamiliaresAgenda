@@ -2,9 +2,9 @@
     <div class="container-fluid">
         <!-- Logo -->
         <a class="navbar-brand" href="./">
-            <img src="/mvc-php/public/images/loginlog.png" 
+            <img src="/SIADO-PJAGS/public/images/siaf3.png" 
                  alt="Logo" 
-                 style="max-height: 30px;">
+                 style="max-height: 45px;">
         </a>
 
         <!-- Botón hamburguesa -->
@@ -63,12 +63,12 @@ if (!isset($isAdmin)) {
 </li>
 
 
-                <!-- Reportes
+                 
                  <li class="nav-item">
-                    <a class="nav-link mx-2" href="reportes.php" id="nav-reportes">
-                        <i class="fas fa-chart-bar me-1"></i> Reportes
+                    <a class="nav-link mx-2" href="bitacora.php" id="nav-bitacora">
+                        <i class="fas fa-chart-bar me-1"></i> Bitácora
                     </a>
-                </li>             -->
+                </li>             
 
                 <!-- Notificaciones 
                 <li class="nav-item">
@@ -101,9 +101,9 @@ if (!isset($isAdmin)) {
 
 <!-- Font Awesome para iconos -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<link rel="stylesheet" href="/mvc-php/public/css/navbar_app.css">
+<link rel="stylesheet" href="/SIADO-PJAGS/public/css/navbar_app.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
-<script src="/mvc-php/public/js/navbar_app.js"></script>
+<script src="/SIADO-PJAGS/public/js/navbar_app.js"></script>
 

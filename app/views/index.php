@@ -5,10 +5,10 @@
 
 
 <body class="bodylogin" style="background-color: transparent; color: white;">
-<div class="container my-5 shadow-sm bg-dark rounded p-4">
+<div class="container my-5 shadow-sm  rounded p-4" style="background-color: rgba(33, 37, 41, 0.80);">
   <!-- Imagen centrada arriba del título -->
   <div class="text-center mb-4">
-    <img src="/mvc-php/public/images/logoblanco.png" class="img-fluid " alt="Logo Poder Judicial" style="max-height: 120px;">
+    <img src="/SIADO-PJAGS/public/images/logoblanco.png" class="img-fluid " alt="Logo Poder Judicial" style="max-height: 120px;">
   </div>
 
   <h2 class="fw-bold mb-4 text-white text-center">Bienvenido al Sistema de Reservas del Poder Judicial</h2>
@@ -35,7 +35,7 @@
   </ul>
 
   <div class="alert alert-transparent text-white border border-white w-75 mx-auto text-center" role="alert">
-    Para hacer uso de todas las funcionalidades, es necesario iniciar sesión con tu cuenta institucional.
+    Para hacer uso de todas las funcionalidades, es necesario iniciar sesión con tu cuenta proporcionada por el administrador.
   </div>
 </div>
 

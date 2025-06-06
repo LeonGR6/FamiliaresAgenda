@@ -7,17 +7,18 @@
     <h2 class="fw-bold mb-4 text-white text-center">Bienvenido al Sistema de Reservas del Poder Judicial</h2>
     
     <div class="row justify-content-center mt-5">
-      <div class="col-md-8">
-        <div class="card bg-dark bg-opacity-75">
+      <div class="col-md-6">
+        <div class="card  bg-opacity-75" style="background-color: rgba(33, 37, 41, 0.80);">
           <div class="card-body">
             <h3 class="card-title text-center mb-4">Contactar a Soporte</h3>
             
             <div class="text-center mb-4">
               <p>¿Necesitas ayuda? Contáctanos directamente por WhatsApp</p>
               
-              <a href="https://wa.me/[4493909651]?text=Hola,%20necesito%20ayuda%20con%20el%20Sistema%20de%20Reservas" 
-                 class="btn btn-success btn-lg mt-3" 
-                 target="_blank">
+              <a href="https://wa.me/524493909651?text=Hola,%20necesito%20ayuda%20con%20el%20Sistema%20de%20Reservas" 
+                 class="btn btn-success btn-lg mt-3 px-4" 
+                 target="_blank"
+                 style="border-radius: 40px;">
                 <i class="fab fa-whatsapp"></i> Contactar por WhatsApp
               </a>
               
@@ -28,7 +29,9 @@
             
             <div class="text-center mt-5">
               <p>O si prefieres, escríbenos a:</p>
-              <a href="mailto:soporte@poderjudicial.com" class="text-info">soporte@poderjudicial.com</a>
+              <i class="fas fa-envelope text-info me-2"></i>
+              <a href="mailto:soporte@poderjudicial.com" 
+              class="text-info fw-bold">soporte@poderjudicial.com</a>
             </div>
           </div>
         </div>

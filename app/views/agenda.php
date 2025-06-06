@@ -61,7 +61,7 @@ require_once 'inc/navbar_app.php';
             height: auto;
         }
     </style>
- <img id="infooral-img" src="/mvc-php/public/images/infooral.png" alt="Info Oral">
+ <img id="infooral-img" src="/SIADO-PJAGS/public/images/infooral.png" alt="Info Oral">
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
 <?php include("inc/footerq.php"); ?>

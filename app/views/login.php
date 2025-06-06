@@ -5,7 +5,7 @@
     <div class="container my-auto py-5">
         <div class="row justify-content-center">
             <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-                <form id="registroForm" method="POST" action="/mvc-php/app/controllers/login_usuario.php">
+                <form id="registroForm" method="POST" action="/SIADO-PJAGS/app/controllers/login_usuario">
                     <div id="registroCard" class="card bg-light shadow-lg text-dark">
                         <div class="card-header text-center bg-dark text-white py-3">
                             <h1 class="h4 mb-0">Iniciar Sesión</h1>
@@ -22,7 +22,7 @@
                             <?php endif; ?>
                             
                             <div class="text-center mb-4">
-                                <img src="/mvc-php/public/images/flamacom.png" alt="Logo" class="img-fluid" style="max-width: 100px; height: auto;">
+                                <img src="/SIADO-PJAGS/public/images/flamacom.png" alt="Logo" class="img-fluid" style="max-width: 100px; height: auto;">
                             </div>
                             
                             <div class="form-group mb-3">
@@ -55,6 +55,6 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="/mvc-php/public/js/login.js"></script>
+    <script src="/SIADO-PJAGS/public/js/login.js"></script>
 </body>
 </html>

@@ -69,4 +69,4 @@
     <button type="submit" id="btnSubmit" class="btn btn-primary">Enviar</button> <!-- Cambio 2: Añadí id al botón -->
 </form>
 
-<script src="/mvc-php/public/js/fecha.js"></script>
+<script src="/SIADO-PJAGS/public/js/fecha.js"></script>

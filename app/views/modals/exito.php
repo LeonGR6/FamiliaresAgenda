@@ -25,4 +25,4 @@
     </div>
 
 
-<script src="/mvc-php/public/js/redireccionExito.js"></script>
+<script src="/SIADO-PJAGS/public/js/redireccionExito.js"></script>

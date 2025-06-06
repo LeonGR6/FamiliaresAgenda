@@ -2,9 +2,9 @@
     <div class="container-fluid">
         <!-- Logo -->
         <a class="navbar-brand" href="./">
-            <img src="/mvc-php/public/images/loginlog.png" 
+            <img src="/SIADO-PJAGS/public/images/siaf3.png" 
                  alt="Logo" 
-                 style="max-height: 30px;">
+                 style="max-height: 45px;">
         </a>
 
         <!-- Botón hamburguesa -->
@@ -39,7 +39,7 @@
 
 <!-- Font Awesome para iconos -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<link rel="stylesheet" href="/mvc-php/public/css/navbar_app.css">
+<link rel="stylesheet" href="/SIADO-PJAGS/public/css/navbar_app.css">
 
-<script src="/mvc-php/public/js/navbar_app.js"></script>
+<script src="/SIADO-PJAGS/public/js/navbar_app.js"></script>
 

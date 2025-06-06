@@ -42,7 +42,7 @@ $(document).ready(function() {
     let fechaFormateada = fechaInput.replace('T', ' ') + ':00';
     
     $.ajax({
-        url: '../controllers/insert.php',
+        url: '../controllers/insert',
         type: 'POST',
         data: form.serialize() + '&fecha_hora_formatted=' + encodeURIComponent(fechaFormateada),
         dataType: 'json',
@@ -99,7 +99,7 @@ function formatDate(dateString) {
     if (!confirm('⚠️ ¿Seguro que deseas eliminar esta reserva?')) return;
     
     $.ajax({
-        url: '../controllers/delete_reserva.php',
+        url: '../controllers/delete_reserva',
         method: 'POST',
         data: { id: id },
         dataType: 'json',

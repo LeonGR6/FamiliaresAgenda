@@ -53,7 +53,7 @@ include 'inc/navbar_app.php';
                     <thead class="thead-dark">
 
                         <div class="d-flex justify-content-between mb-3">
-                                    <a href="modals/registrar_usuarios.php" class="btn btn-outline-success border btn-md">
+                                    <a href="modals/registrar_usuarios" class="btn btn-outline-success  btn-md">
                                         <i class="fas fa-user"></i> Registrar Usuario
                                     </a>
                                 </div>
@@ -116,7 +116,7 @@ include 'inc/navbar_app.php';
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
-<script src="/mvc-php/public/js/usuarios.js"></script>
+<script src="/SIADO-PJAGS/public/js/usuarios.js"></script>
 
 
 

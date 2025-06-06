@@ -32,14 +32,14 @@ require_once 'inc/defnavbar.php';
     <div class="container mt-3 mt-md-5">
         <div class="row justify-content-center">
             <div class="col-12 col-md-8 col-lg-6">
-                <form id="registroForm" method="POST" action="/mvc-php/app/controllers/registrar_usuario.php">
+                <form id="registroForm" method="POST" action="/SIADO-PJAGS/app/controllers/registrar_usuario">
                     <div id="registroCard" class="card bg-light shadow-lg text-dark mb-5">
                         <div class="card-header text-center bg-dark text-white py-3">
                             <h1 class="h3 mb-0" style="font-size: calc(1.2rem + 0.6vw)">Registrar Usuario</h1>
                         </div>
                         <div class="card-body p-3 p-md-4">
                             <div class="text-center mb-3 mb-md-4">
-                                <img src="/mvc-php/public/images/flamacom.png" alt="Logo" class="img-fluid" style="max-width: 100px; height: auto;">
+                                <img src="/SIADO-PJAGS/public/images/flamacom.png" alt="Logo" class="img-fluid" style="max-width: 100px; height: auto;">
                             </div>
                             
                             <div class="form-group mb-3">
@@ -79,7 +79,7 @@ require_once 'inc/defnavbar.php';
                             </div>
                             
                             <div class="text-center mt-3">
-                                <a href="/mvc-php/app/views/login.php" class="text-dark">¿Ya tienes una cuenta? Inicia Sesión</a>
+                                <a href="/SIADO-PJAGS/app/views/login.php" class="text-dark">¿Ya tienes una cuenta? Inicia Sesión</a>
                             </div>
                         </div>
                     </div>
@@ -102,7 +102,7 @@ require_once 'inc/defnavbar.php';
                     <hr>
                     <p class="mb-0">Te vamos a redirigir al inicio de sesión para que accedas a tu cuenta
                      Si no ocurre automáticamente, puedes hacer clic en el siguiente enlace para continuar:
-                     <a href="/mvc-php/app/views/login.php">Iniciar sesión</a>.
+                     <a href="/SIADO-PJAGS/app/views/login.php">Iniciar sesión</a>.
                     <p>Redirigiendo en <span id="countdown">10</span> segundos...</p>
                 </div>
             </div>
@@ -116,7 +116,7 @@ require_once 'inc/defnavbar.php';
     <!-- 3. Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <!-- 4. Tus scripts (registro.js, SweetAlert, etc.) -->
-    <script src="/mvc-php/public/js/registro.js"></script>
+    <script src="/SIADO-PJAGS/public/js/registro.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Script para autocompletar el campo de usuario -->

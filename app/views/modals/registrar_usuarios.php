@@ -14,14 +14,14 @@ require_once '../inc/navbar_default.php';
     <div class="container mt-3 mt-md-5">
         <div class="row justify-content-center">
             <div class="col-12 col-md-8 col-lg-6">
-                <form id="registroForm" method="POST" action="/mvc-php/app/controllers/registrar_usuario.php">
+                <form id="registroForm" method="POST" action="/SIADO-PJAGS/app/controllers/registrar_usuario">
                     <div id="registroCard" class="card bg-light shadow-lg text-dark mb-5">
                         <div class="card-header text-center bg-dark text-white py-3">
                             <h1 class="h3 mb-0" style="font-size: calc(1.2rem + 0.6vw)">Registrar Usuario</h1>
                         </div>
                         <div class="card-body p-3 p-md-4">
                             <div class="text-center mb-3 mb-md-4">
-                                <img src="/mvc-php/public/images/flamacom.png" alt="Logo" class="img-fluid" style="max-width: 100px; height: auto;">
+                                <img src="/SIADO-PJAGS/public/images/flamacom.png" alt="Logo" class="img-fluid" style="max-width: 100px; height: auto;">
                             </div>
                             
                             <div class="form-group mb-3">
@@ -62,4 +62,4 @@ require_once '../inc/navbar_default.php';
 
 
 
-<script src="/mvc-php/public/js/registrar_usuarios.js"></script>
+<script src="/SIADO-PJAGS/public/js/registrar_usuarios.js"></script>

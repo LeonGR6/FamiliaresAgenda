@@ -48,7 +48,7 @@ try {
     http_response_code(500);
     echo json_encode([
         'error' => true,
-        'message' => 'Error de base de datos: ' . $e->getMessage()
+        'message' => 'Error de base de datos, el usuario tiene reservas pendientes: ' . $e->getMessage()
     ]);
 } catch (Exception $e) {
     http_response_code($e->getCode() ?: 500);

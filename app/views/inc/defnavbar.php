@@ -3,9 +3,9 @@
       
     <div>
         <a>
-        <img src="/mvc-php/public/images/familiares.png"
+        <img src="/SIADO-PJAGS/public/images/siaf3.png"
              alt="Logo" 
-             style="max-height: 30px;">
+             style="max-height: 45px;">
         </a>
     </div>
 

@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     countdownElement.textContent = seconds;
                     if (seconds <= 0) {
                         clearInterval(timer);
-                        window.location.href = '/mvc-php/app/views/login.php';
+                        window.location.href = '/SIADO-PJAGS/app/views/login.php';
                     }
                 }, 1000);
             }

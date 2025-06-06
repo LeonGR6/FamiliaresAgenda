@@ -247,7 +247,7 @@ $db = null;
         height: auto;
     }
 </style>
-<img id="infooral-img" src="/mvc-php/public/images/infooral.png" alt="Info Oral">
+<img id="infooral-img" src="/SIADO-PJAGS/public/images/infooral.png" alt="Info Oral">
 
 
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
